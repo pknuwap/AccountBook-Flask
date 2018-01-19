@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="../static/main.css" type="text/css"> </head>
+
+<body>
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar3SupportedContent" aria-controls="navbar3SupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+      <div class="collapse navbar-collapse text-center justify-content-center" id="navbar3SupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="intro.html">프로젝트소개</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="home.html">전자장부</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="current.html">회비장부</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="stat.html">사용통계</a>
+          </li>
+        </ul>
+        <a class="ml-3 btn navbar-btn btn-primary" href="#">전자장부 시작하기</a>
+      </div>
+    </div>
+  </nav>
+  <div class="py-5 text-center bg-light text-dark">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="pb-3 text-dark">WAP ACCOUNT PROJECT with BLOCKCHAIN</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="text-right col-md-6">
+          <div class="row my-5">
+            <div class="col-2 order-lg-2 col-2 text-center"><i class="d-block fa fa-columns fa-3x"></i></div>
+            <div class="col-10 text-lg-right text-left order-lg-1">
+              <h4 class="text-primary">BlockChain</h4>
+              <p>블록체인 기술을 활용하여 모든 사용자에게 장부를 공유</p>
+            </div>
+          </div>
+          <div class="row my-5">
+            <div class="col-2 order-lg-2 col-2 text-center"><i class="d-block fa fa-circle-thin fa-4x"></i></div>
+            <div class="col-10 text-lg-right text-left order-lg-1">
+              <h4 class="text-primary">Amazon AWS</h4>
+              <p>아마존 AWS를 통한 웹호스팅 사용</p>
+            </div>
+          </div>
+          <div class="row my-5">
+            <div class="col-2 order-lg-2 col-2 text-center"><i class="d-block fa  fa-comment-o fa-3x"></i></div>
+            <div class="col-10 text-lg-right text-left order-lg-1">
+              <h4 class="text-primary">Connect</h4>
+              <p>github/etilelab/AccountBook-BlockChain</p>
+            </div>
+          </div>
+        </div>
+        <div class="text-left col-md-6">
+          <div class="row my-5">
+            <div class="col-2 text-center"><i class="d-block fa fa-battery-empty fa-3x"></i></div>
+            <div class="col-10">
+              <h4 class="text-primary">Python Flask</h4>
+              <p>python flask로 빠르게 제작
+                <br> </p>
+            </div>
+          </div>
+          <div class="row my-5">
+            <div class="col-2 text-center"><i class="d-block mx-auto fa  fa-clone fa-3x"></i></div>
+            <div class="col-10">
+              <h4 class="text-primary">MYSQL</h4>
+              <p>mysql database사용으로 장부를 효율적으로 관리</p>
+            </div>
+          </div>
+          <div class="row my-5">
+            <div class="col-2 text-center"><i class="d-block fa  fa-heart-o fa-3x"></i></div>
+            <div class="col-10">
+              <h4 class="text-primary">Opensource</h4>
+              <p>오픈소스 프로젝트로 소스코드 공개로 누구나 요청 가능</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a class="btn btn-dark" href="" style="padding: 20px 100px;" data-target="#layerpop" data-toggle="modal">WAP로그인</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-5 bg-dark text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mt-3 text-center">
+          <p>© Copyright 2017 WAP - All rights reserved.
+            <br> </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="layerpop">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">WAP 로그인</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+        </div>
+        <div class="modal-body">
+          <form class="" method="post" action="https://formspree.io/">
+            <div class="form-group"> <label>이메일</label>
+              <input type="email" name="email" class="form-control" placeholder="Enter email"> </div>
+            <div class="form-group"> <label>비밀번호</label>
+              <input type="password" name="password" class="form-control" placeholder="Password"> </div>
+            <button type="submit" class="btn btn-dark">로그인</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
