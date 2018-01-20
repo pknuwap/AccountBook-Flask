@@ -19,6 +19,10 @@ def home_main():
 def stat():
     return render_template('stat.html', name="stat")
 
+@app.route('/join')
+def join():
+    return render_template('join.html', name="join")
+
 
 if __name__ == '__main__':
     app.run()
