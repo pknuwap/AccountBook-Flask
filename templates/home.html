@@ -237,14 +237,14 @@
         <div class="modal-body" style="margin: 20px 20px 20px 20px">
           <h3 class="pb-3">장부작성 양식</h3>
           <p>장부 저장 후 수정은 절대불가하니, 신중하게 작성해주세요.</p>
-          <form action="https://formspree.io/YOUREMAILHERE">
+          <form action="/addAccount" method="POST">
             <div class="form-group"> <label>사용자</label>
-              <input class="form-control" placeholder="이태경"> </div>
+              <input type="text" class="form-control" placeholder="이태경" name="use_name"> </div>
             <div class="form-group"> <label>사용금액(원 생략, 숫자만 입력)</label>
-              <input type="number" class="form-control" placeholder="10000"> </div>
+              <input type="number" class="form-control" placeholder="10000" name="use_money"> </div>
             <div class="form-group"> <label>사용일(2018-01-01)</label>
-              <input type="time" class="form-control"> </div>
-            <div class="form-group"> <label>사용내역</label><textarea class="form-control" id="Textarea" rows="3" placeholder="사용내역을 간단히 입력해주세요"></textarea> </div>
+              <input type="number" class="form-control" name="use_date"> </div>
+            <div class="form-group"> <label>사용내역</label><textarea type="text" name="use_d" class="form-control" id="Textarea" rows="3" placeholder="사용내역을 간단히 입력해주세요"></textarea> </div>
             <button type="submit" class="btn mt-2 btn-dark">장부작성</button>
           </form>
         </div>

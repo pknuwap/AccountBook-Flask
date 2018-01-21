@@ -1,0 +1,53 @@
+
+# db생성
+# db구조 구체화 필요
+CREATE DATABASE 데이타베이스_이름 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+DROP procedure IF EXISTS `accountBook`.`sp_addAccount`;
+'''
+### CREATE TABLE `tbl_account` (
+  `account_id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_use_user` varchar(45) DEFAULT NULL,
+  `account_use_description` varchar(5000) DEFAULT NULL,
+`account_use_money` int(11) DEFAULT NULL,
+  `account_use_date` int(11) DEFAULT NULL,
+`account_write_date` int(11) DEFAULT NULL,
+`account_write_user` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`account_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+DELIMITER $$
+USE `accountBook`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addAccount`(
+    IN p_use_user varchar(45),
+  IN p_use_description varchar(5000),
+IN p_use_money INT,
+IN p_use_date INT,
+IN p_write_date INT,
+IN p_write_user varchar(45)
+)
+BEGIN
+    insert into tbl_account(
+        account_use_user,
+        account_use_description,
+        account_use_money,
+	account_use_date,
+	account_write_date,
+	account_write_user
+    )
+    values
+    (
+        p_use_user,
+        p_use_description,
+        p_use_money,
+	p_use_date,
+	p_write_date,
+	p_write_user
+    );
+END$$
+
+DELIMITER ;
+;
+#
+'''

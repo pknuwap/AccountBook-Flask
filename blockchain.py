@@ -4,14 +4,16 @@ from time import time
 from uuid import uuid4
 from urllib.parse import urlparse
 import requests
-
+from datetime import datetime
 
 class BlockChain(object):
+
+    # 블록체인 생성자
     def __init__(self):
-        self.chain = []
-        self.current_transactions = []
-        self.new_block(previous_hash=1, month=1, proof=100) # genesis block
-        self.nodes = set()
+        self.chain = [] # 체인을 빈 리스트로 선언
+        self.current_transactions = [] # 거래 목록 리스트로 선언
+        self.new_block(previous_hash=1, month=datetime.today().month, proof=100) # genesis block, 초기 블록을 만든다.
+        self.nodes = set() # nodes들 설정 (사용자)
 
     # 새로운 블록구조(매달 장부)
     def new_block(self, proof, month, previous_hash=None):
@@ -24,7 +26,7 @@ class BlockChain(object):
             'previous_hash':previous_hash or self.hash(self.chain[-1])
         }
         self.current_transactions = []
-        self.chain.append(block)
+        self.chain.append(block) # 체인에 블록 추가하기
         return block
 
     # 새로운 거래(장부작성)
@@ -38,7 +40,7 @@ class BlockChain(object):
             'timestamp': time() # 장부 작성시간
         })
 
-        return self.last_block['index'] + 1
+        return self.last_block['index'] + 1 # 마지막 블록 + 1 을 반환
 
     @staticmethod
     def hash(block):
@@ -57,15 +59,18 @@ class BlockChain(object):
 
     # 새로운 사용자(노드) 등록
     def register_node(self,address):
-        parsed_url = urlparse(address)
-        self.nodes.add(parsed_url.netloc)
+        parsed_url = urlparse(address) # address를 urlparse로 전환
+        self.nodes.add(parsed_url.netloc) # 노드들에 추가
+
 
     # 체인의 유효성 검사, 올바른 블록(매달 장부)인가 체크
     def valid_chain(self, chain):
-        last_block = chain[0]
-        current_index = 1
 
-        while current_index < len(chain):
+        # 초기화
+        last_block = chain[0] # 최근 블록은 가장 첫번째 블록으로 설정
+        current_index = 1 # 현재 index는 1
+
+        while current_index < len(chain): # 현재 인덱스에서, 체인의 크기가 될때까지
             block = chain[current_index]
             print(f'{last_block}')
             print(f'{block}')
@@ -105,7 +110,6 @@ class BlockChain(object):
             self.chain = new_chain
             return True
         return False
-
 
 
     @staticmethod
