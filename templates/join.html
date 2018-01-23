@@ -67,7 +67,7 @@
             <div class="form-group" id="divEmail">
                 <label for="inputEmail" class="col-lg-10 control-label">이메일</label>
                 <div class="col">
-                    <input type="email" class="form-control" name="inputEmail" data-rule-required="true" placeholder="이메일" maxlength="40">
+                    <input type="email" class="form-control" id="inputEmail" name="inputEmail" data-rule-required="true" placeholder="이메일" maxlength="40">
                 </div>
             </div>
 
@@ -107,6 +107,8 @@
                 </div>
             </div>
 
+            <p class="text-danger">{{ error }}</p>
+
         </form>
             </div>
 
@@ -126,7 +128,6 @@
           </div>
         </div>
   </div>
-
 
     <script>
 
@@ -224,11 +225,11 @@
                     }
                 });
 
-                $('#email').keyup(function(event){
+                $('#inputEmail').keyup(function(event){
 
                     var divEmail = $('#divEmail');
 
-                    if($.trim($('#email').val())==""){
+                    if($.trim($('#inputEmail').val())==""){
                         divEmail.removeClass("has-success");
                         divEmail.addClass("has-error");
                     }else{
