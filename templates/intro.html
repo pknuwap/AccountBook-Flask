@@ -113,19 +113,27 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
         </div>
         <div class="modal-body">
-          <form class="" method="post" action="https://formspree.io/">
+          <form class="" method="POST" action="/intro">
             <div class="form-group"> <label>이메일</label>
-              <input type="email" name="email" class="form-control" placeholder="Enter email"> </div>
+              <input type="email" name="inputEmail" class="form-control" placeholder="Enter email"> </div>
             <div class="form-group"> <label>비밀번호</label>
-              <input type="password" name="password" class="form-control" placeholder="Password"> </div>
+              <input type="password" name="inputPassword" class="form-control" placeholder="Password"> </div>
             <button type="submit" class="btn btn-dark">로그인</button>
-              <button type="button" class="btn btn-dark" onclick="window.location.href='/showJoin'">회원가입</button>
+              <button type="button" class="btn btn-dark" onclick="window.location.href='/joinIn'">회원가입</button>
           </form>
+
+                {%if loginError != null %}
+                <br>
+            <center><p class="text-danger"> {{
+                    loginError }} </p></center>
+            {% endif %}
+
+
         </div>
+
       </div>
     </div>
   </div>
-
 
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
