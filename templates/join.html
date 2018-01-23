@@ -62,31 +62,31 @@
             <div class="card text-dark p-5 bg-white">
                 <center><h3 class="mb-4">WAP전자장부 회원가입</h3></center>
 
-        <form class="form-horizontal" role="form" method="post" action="javascript:alert( 'success!' );">
+        <form class="form-horizontal" role="form" method="POST" action="/joinIn">
 
             <div class="form-group" id="divEmail">
                 <label for="inputEmail" class="col-lg-10 control-label">이메일</label>
                 <div class="col">
-                    <input type="email" class="form-control" id="email" data-rule-required="true" placeholder="이메일" maxlength="40">
+                    <input type="email" class="form-control" name="inputEmail" data-rule-required="true" placeholder="이메일" maxlength="40">
                 </div>
             </div>
 
             <div class="form-group" id="divPassword">
                 <label for="inputPassword" class="col-lg-10 control-label">패스워드</label>
                 <div class="col">
-                    <input type="password" class="form-control" id="password" name="excludeHangul" data-rule-required="true" placeholder="패스워드" maxlength="30">
+                    <input type="password" class="form-control onlyAlphabetAndNumber" id="inputPassword" name="inputPassword" name="excludeHangul" data-rule-required="true" placeholder="패스워드" maxlength="30">
                 </div>
             </div>
             <div class="form-group" id="divPasswordCheck">
                 <label for="inputPasswordCheck" class="col-lg-10 control-label">패스워드 확인</label>
                 <div class="col">
-                    <input type="password" class="form-control" id="passwordCheck" data-rule-required="true" placeholder="패스워드 확인" maxlength="30">
+                    <input type="password" class="form-control onlyAlphabetAndNumber" id="inputPasswordCheck" name="inputPasswordCheck" data-rule-required="true" placeholder="패스워드 확인" maxlength="30">
                 </div>
             </div>
             <div class="form-group" id="divName">
                 <label for="inputName" class="col-lg-10 control-label">이름</label>
                 <div class="col">
-                    <input type="text" class="form-control onlyHangul" id="name" data-rule-required="true" placeholder="한글만 입력 가능합니다." maxlength="15">
+                    <input type="text" class="form-control onlyHangul" name="inputName" data-rule-required="true" placeholder="한글만 입력 가능합니다." maxlength="15">
                 </div>
             </div>
 
@@ -94,9 +94,9 @@
             <div class="form-group">
                 <label for="inputPhoneNumber" class="col-lg-2 control-label">성별</label>
                 <div class="col">
-                    <select class="form-control" id="gender">
-                        <option value="M">남</option>
-                        <option value="F">여</option>
+                    <select class="form-control" name="inputGender">
+                        <option value="0">남</option>
+                        <option value="1">여</option>
                     </select>
                 </div>
             </div>
@@ -170,11 +170,11 @@
                     }
                 });
 
-                $('#password').keyup(function(event){
+                $('#inputPassword').keyup(function(event){
 
                     var divPassword = $('#divPassword');
 
-                    if($('#password').val()==""){
+                    if($('#inputPassword').val()==""){
                         divPassword.removeClass("has-success");
                         divPassword.addClass("has-error");
                     }else{
@@ -183,10 +183,10 @@
                     }
                 });
 
-                $('#passwordCheck').keyup(function(event){
+                $('#inputPasswordCheck').keyup(function(event){
 
-                    var passwordCheck = $('#passwordCheck').val();
-                    var password = $('#password').val();
+                    var passwordCheck = $('#inputPasswordCheck').val();
+                    var password = $('#inputPassword').val();
                     var divPasswordCheck = $('#divPasswordCheck');
 
                     if((passwordCheck=="") || (password!=passwordCheck)){
@@ -198,7 +198,7 @@
                     }
                 });
 
-                $('#name').keyup(function(event){
+                $('#inputName').keyup(function(event){
 
                     var divName = $('#divName');
 
@@ -307,13 +307,13 @@
                     }
 
                     //이메일
-                    if($('#email').val()==""){
+                    if($('#inputEmail').val()==""){
                         modalContents.text("이메일을 입력하여 주시기 바랍니다.");
                         modal.modal('show');
 
                         divEmail.removeClass("has-success");
                         divEmail.addClass("has-error");
-                        $('#email').focus();
+                        $('#inputEmail').focus();
                         return false;
                     }else{
                         divEmail.removeClass("has-error");
@@ -321,13 +321,13 @@
                     }
 
                     //패스워드 검사
-                    if($('#password').val()==""){
+                    if($('#inputPassword').val()==""){
                         modalContents.text("패스워드를 입력하여 주시기 바랍니다.");
                         modal.modal('show');
 
                         divPassword.removeClass("has-success");
                         divPassword.addClass("has-error");
-                        $('#password').focus();
+                        $('#inputPassword').focus();
                         return false;
                     }else{
                         divPassword.removeClass("has-error");
@@ -335,13 +335,13 @@
                     }
 
                     //패스워드 확인
-                    if($('#passwordCheck').val()==""){
+                    if($('#inputPasswordCheck').val()==""){
                         modalContents.text("패스워드 확인을 입력하여 주시기 바랍니다.");
                         modal.modal('show');
 
                         divPasswordCheck.removeClass("has-success");
                         divPasswordCheck.addClass("has-error");
-                        $('#passwordCheck').focus();
+                        $('#inputPasswordCheck').focus();
                         return false;
                     }else{
                         divPasswordCheck.removeClass("has-error");
@@ -349,13 +349,13 @@
                     }
 
                     //패스워드 비교
-                    if($('#password').val()!=$('#passwordCheck').val() || $('#passwordCheck').val()==""){
+                    if($('#inputPassword').val()!=$('#inputPasswordCheck').val() || $('#inputPasswordCheck').val()==""){
                         modalContents.text("패스워드가 일치하지 않습니다.");
                         modal.modal('show');
 
                         divPasswordCheck.removeClass("has-success");
                         divPasswordCheck.addClass("has-error");
-                        $('#passwordCheck').focus();
+                        $('#inputPasswordCheck').focus();
                         return false;
                     }else{
                         divPasswordCheck.removeClass("has-error");
@@ -363,13 +363,13 @@
                     }
 
                     //이름
-                    if($('#name').val()==""){
+                    if($('#inputName').val()==""){
                         modalContents.text("이름을 입력하여 주시기 바랍니다.");
                         modal.modal('show');
 
                         divName.removeClass("has-success");
                         divName.addClass("has-error");
-                        $('#name').focus();
+                        $('#inputName').focus();
                         return false;
                     }else{
                         divName.removeClass("has-error");
