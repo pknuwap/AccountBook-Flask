@@ -11,6 +11,8 @@
 </head>
 
 <body>
+
+
   <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <div class="container">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar3SupportedContent" aria-controls="navbar3SupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
@@ -106,18 +108,21 @@
     </div>
   </div>
   <div class="modal" id="layerpop">
+
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">WAP 로그인</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
         </div>
+
         <div class="modal-body">
-          <form class="" method="POST" action="/intro">
+
+          <form role="form" method="POST" action="/intro">
             <div class="form-group"> <label>이메일</label>
-              <input type="email" name="inputEmail" class="form-control" placeholder="Enter email"> </div>
-            <div class="form-group"> <label>비밀번호</label>
-              <input type="password" name="inputPassword" class="form-control" placeholder="Password"> </div>
+              <input type="email" name="inputEmail" class="form-control" placeholder="Enter email" data-rule-required="true" > </div>
+            <div class="form-group" id="divPassword"> <label>비밀번호</label>
+              <input type="password" id="inputPassword" name="inputPassword" class="form-control onlyAlphabetAndNumber" placeholder="Password" data-rule-required="true" > </div>
             <button type="submit" class="btn btn-dark">로그인</button>
               <button type="button" class="btn btn-dark" onclick="window.location.href='/joinIn'">회원가입</button>
           </form>

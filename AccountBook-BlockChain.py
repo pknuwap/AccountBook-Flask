@@ -6,13 +6,14 @@ from blockchain import BlockChain
 from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
+import sec
 
 mysql = MySQL()
 app = Flask(__name__)
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'plz'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlxorud7202'
 app.config['MYSQL_DATABASE_DB'] = 'accountBook'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -72,6 +73,12 @@ def validateLogin():
             _email = request.form['inputEmail']
             _password = request.form['inputPassword']
 
+            # security
+            if sec.check_password(_password, 1) == False or sec.check_password(_email,0) == False:
+                return render_template('intro.html', loginError='특수문자를 제외해주세요.')
+            if sec.check_null(_email) == False or sec.check_null(_password) == False:
+                return render_template('intro.html', loginError='이메일과 비밀번호를 입력해주세요.')
+
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.callproc('sp_validateLogin',(_email,))
@@ -130,6 +137,7 @@ def joinIn():
 @app.route('/stat')
 def stat():
     return render_template('stat.html', name="stat")
+
 
 
 if __name__ == '__main__':
