@@ -31,6 +31,9 @@
           </li>
         </ul>
         <a class="ml-3 btn navbar-btn btn-primary" href="#">전자장부 시작하기</a>
+          {% if userName != null %}
+            <a class="ml-3 btn navbar-btny btn-light" href="#">{{ userName }} 로그아웃</a>
+          {% endif %}
       </div>
     </div>
   </nav>
@@ -92,7 +95,9 @@
       </div>
       <div class="row">
         <div class="col-md-12">
+            {% if userName == "" %}
           <a class="btn btn-dark" href="" style="padding: 20px 100px;" data-target="#layerpop" data-toggle="modal">WAP로그인/회원가입</a>
+            {% endif %}
         </div>
       </div>
     </div>

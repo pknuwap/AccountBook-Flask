@@ -33,33 +33,39 @@ def current():
 # 장부화면
 @app.route('/home')
 def home_main():
-    return render_template('home.html', name="home_main")
+    if session.get('user'):
+        return render_template('home.html', name="home_main",userName="이태경")
+    else:
+        return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
+
 
 
 # 장부추가 아직 수정해야함
 @app.route('/addAccount', methods=['POST'])
 def addAcount():
     try:
-        _use_name = request.form['use_name']
-        _use_description = request.form['use_d']
-        _use_money = int(request.form['use_money'])
-        _use_date = int(request.form['use_date'])
-        _write_name = 'writer'
-        _write_date = 20180101
-        print(type(_write_date))
+         if session.get('user'):
+            _user = session.get('user')
+            _use_name = request.form['use_name']
+            _use_description = request.form['use_d']
+            _use_money = int(request.form['use_money'])
+            _use_date = int(request.form['use_date'])
+            _write_name = 'writer'
+            _write_date = 20180101
+            print(type(_write_date))
 
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        print((_use_name, _use_description, _use_money, _use_date, _write_date, _write_name))
-        print((type(_use_name), type(_use_description), type(_use_money), type(_use_date), type(_write_date), type(_write_name)))
-        cursor.callproc('sp_addAccount', (_use_name, _use_description, _use_money, _use_date, _write_date, _write_name))
-        data = cursor.fetchall()
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            print((_use_name, _use_description, _use_money, _use_date, _write_date, _write_name))
+            print((type(_use_name), type(_use_description), type(_use_money), type(_use_date), type(_write_date), type(_write_name)))
+            cursor.callproc('sp_addAccount', (_use_name, _use_description, _use_money, _use_date, _write_date, _write_name))
+            data = cursor.fetchall()
 
-        if len(data) is 0:
-            conn.commit()
-            return redirect('/home')
-        else:
-            return render_template('error.html', error='An error occurred!')
+            if len(data) is 0:
+                conn.commit()
+                return redirect('/home')
+            else:
+                return render_template('error.html', error='An error occurred!')
 
     except Exception as e:
         print(str(e))
@@ -87,7 +93,8 @@ def validateLogin():
             if len(data) > 0:
                 if(check_password_hash(str(data[0][1]), _password)): # user password compared
                     session['user'] = data[0][0] # user name
-                    return redirect('/')
+                    print(str(data[0][2]))
+                    return render_template('intro.html', userName=str(data[0][2]))
                 else:
                     return render_template('intro.html', loginError='잘못된 Email이거나 잘못된 Password 입니다')
             else:
@@ -97,7 +104,8 @@ def validateLogin():
             return render_template('error.html', error=str(e))
 
     else:
-        return render_template('intro.html', name="intro")
+        if session.get('user'):
+            return render_template('intro.html', name="intro")
 
 
 # 회원가입
@@ -138,6 +146,10 @@ def joinIn():
 def stat():
     return render_template('stat.html', name="stat")
 
+@app.route('/logout')
+def logout():
+    session.pop('user',None)
+    return redirect('/')
 
 
 if __name__ == '__main__':
