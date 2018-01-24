@@ -31,16 +31,41 @@ def current():
     return render_template('current.html', name="current")
 
 # 장부화면
+# 기능
+# db에서 가장 최근순으로 20개의 장부내역을 가져와야함
+# 정렬 기능(오래된, 사용금액, 사용일 순), 검색기능(내역에서) 포함해야함
 @app.route('/home')
 def home_main():
-    if session.get('user'):
-        return render_template('home.html', name="home_main",userName=session['name'])
-    else:
-        return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
+    try:
+        if session.get('user'):
+            _p_count = 20 # 몇개의 데이터를 보여줄것인가
+
+            con = mysql.connect()
+            cursor = con.cursor()
+            cursor.callproc('sp_GetAccountBook', (_p_count,))
+            account_book = cursor.fetchall()
+
+            account_list = []
+            for account in account_book:
+                account_dict = {
+                    'account_id':account[0],
+                    'account_use_user': account[1],
+                    'account_use_description': account[2],
+                    'account_use_money': account[3],
+                    'account_use_date': account[4],
+                    'account_write_date':account[5],
+                    'account_write_user':account[6],
+                }
+                account_list.append(account_dict)
+
+            return render_template('home.html', json_data=account_list, json_count=len(account_list), userName=session.get('name'))
+        else:
+            return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
+    except Exception as e:
+        return render_template('error.html', error=str(e))
 
 
-
-# 장부추가 아직 수정해야함
+# 장부추가 아직 수정해야함, 예외처리 필요
 @app.route('/addAccount', methods=['POST'])
 def addAcount():
     try:
@@ -50,14 +75,12 @@ def addAcount():
             _use_description = request.form['use_d']
             _use_money = int(request.form['use_money'])
             _use_date = int(request.form['use_date'])
-            _write_name = 'writer'
-            _write_date = 20180101
-            print(type(_write_date))
+            _write_name = session.get('name')
+            _write_date = int(datetime.today().strftime("%Y%m%d"))
 
             conn = mysql.connect()
             cursor = conn.cursor()
-            print((_use_name, _use_description, _use_money, _use_date, _write_date, _write_name))
-            print((type(_use_name), type(_use_description), type(_use_money), type(_use_date), type(_write_date), type(_write_name)))
+
             cursor.callproc('sp_addAccount', (_use_name, _use_description, _use_money, _use_date, _write_date, _write_name))
             data = cursor.fetchall()
 

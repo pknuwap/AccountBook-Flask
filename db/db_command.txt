@@ -77,6 +77,18 @@ BEGIN
 END$$
 DELIMITER ;
 
+# 장부보기 함수 , 최신순으로 정렬해서 p_count 만큼 가져옴
+DELIMITER $$
+USE `accountBook`$$
+CREATE PROCEDURE `sp_GetAccountBook` (
+IN p_count bigint
+)
+BEGIN
+    SELECT * FROM tbl_account  ORDER BY account_id DESC  LIMIT p_count;
+END$$
+
+DELIMITER ;
+
 
 # 장부추가 함수 존재하면 삭제(장부추가함수명 : sp_addAccount)
 DROP procedure IF EXISTS `accountBook`.`sp_addAccount`;

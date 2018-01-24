@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="../static/main.css" type="text/css">
     <title>WAP 전자장부 시스템</title>
-
-
 </head>
 
 <body>
 
+
   {% include 'include/navbar.html' %}
+
 
   <div class="py-5">
     <div class="container">
@@ -57,94 +57,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>동아리 회비</td>
-                <td>3,500</td>
-                <td>2018.01.01</td>
-                  <td>2018.01.01</td>
-              </tr>
+
+              {% for line in json_data %}
+                <tr>
+                <td>{{ line.account_id }}</td>
+                    <td>{{ line.account_use_user }}</td>
+                    <td>{{ line.account_use_description }}</td>
+                <td>{{ line.account_use_money }}</td>
+                <td>{{ line.account_use_date }}</td>
+                <td>{{ line.account_write_date }}</td>
+                <td>{{ line.account_write_user }}</td>
+
+                </tr>
+              {% endfor %}
+
             </tbody>
           </table>
         </div>
