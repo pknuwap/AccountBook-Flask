@@ -13,34 +13,8 @@
 
 <body>
 
-  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <div class="container">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar3SupportedContent" aria-controls="navbar3SupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-      <div class="collapse navbar-collapse text-center justify-content-center" id="navbar3SupportedContent">
+  {% include 'include/navbar.html' %}
 
-        <ul class="navbar-nav">
-               <a class="nav-link" href="/">프로젝트소개</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="home">전자장부</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="current">회비장부</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="stat">사용통계</a>
-          </li>
-
-        </ul>
-        <a class="ml-3 btn navbar-btn btn-primary" href="#">전자장부 시작하기</a>
-
-          {% if userName != null %}
-            <a class="ml-3 btn navbar-btny btn-light" href="/logout">{{ userName }}님 로그아웃</a>
-          {% endif %}
-
-      </div>
-    </div>
-  </nav>
   <div class="py-5">
     <div class="container">
       <div class="row">
