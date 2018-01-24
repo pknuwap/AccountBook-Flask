@@ -139,11 +139,10 @@ def joinIn():
                 return render_template('error.html', error=str(e))
 
         else:
-            if session['user'] == None:
-                return render_template('join.html', name="join")
-            else:
+            if session.get('user'):
                 return render_template('error.html', error="로그아웃 후 가입을 시도해주세요.")
-
+            else:
+                return render_template('join.html', name="join")
 
 
 # 통계 화면
@@ -157,6 +156,9 @@ def logout():
     session.pop('user',None)
     return redirect('/')
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html',error="404 페이지를 찾을 수 없습니다")
 
 if __name__ == '__main__':
     app.run()
