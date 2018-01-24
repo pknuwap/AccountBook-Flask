@@ -23,7 +23,7 @@ app.secret_key = '???'
 # 홈화면
 @app.route('/')
 def home_intro():
-    return render_template('intro.html', name="home_intro")
+    return validateLogin()
 
 # 회비납부 화면
 @app.route('/current')
@@ -34,7 +34,7 @@ def current():
 @app.route('/home')
 def home_main():
     if session.get('user'):
-        return render_template('home.html', name="home_main",userName="이태경")
+        return render_template('home.html', name="home_main",userName=session['name'])
     else:
         return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
 
@@ -92,8 +92,8 @@ def validateLogin():
 
             if len(data) > 0:
                 if(check_password_hash(str(data[0][1]), _password)): # user password compared
-                    session['user'] = data[0][0] # user name
-                    print(str(data[0][2]))
+                    session['user'] = data[0][0] # user email
+                    session['name'] = data[0][2] # user name
                     return render_template('intro.html', userName=str(data[0][2]))
                 else:
                     return render_template('intro.html', loginError='잘못된 Email이거나 잘못된 Password 입니다')
@@ -105,40 +105,45 @@ def validateLogin():
 
     else:
         if session.get('user'):
-            return render_template('intro.html', name="intro")
-
+            return render_template('intro.html', userName=str(session['name']))
+        else:
+            return render_template('intro.html')
 
 # 회원가입
 @app.route('/joinIn', methods=['POST', 'GET'])
 def joinIn():
-    if request.method == 'POST':
-        try:
-            _email = request.form['inputEmail']
-            _password = request.form['inputPassword'] # 특수문자 허용 x
-            _name = request.form['inputName']
-            _gender = int(request.form['inputGender']) # man=0, woman=1
-            _grade = int(0) # default, 관리자=1
+        if request.method == 'POST':
+            try:
+                _email = request.form['inputEmail']
+                _password = request.form['inputPassword'] # 특수문자 허용 x
+                _name = request.form['inputName']
+                _gender = int(request.form['inputGender']) # man=0, woman=1
+                _grade = int(0) # default, 관리자=1
 
-            if _email and _password and _name:
-                conn = mysql.connect()
-                cursor = conn.cursor()
-                _hashed_password = generate_password_hash(_password)
-                cursor.callproc('sp_createUser', (_email, _hashed_password, _name, _gender, _grade))
-                data = cursor.fetchall()
+                if _email and _password and _name:
+                    conn = mysql.connect()
+                    cursor = conn.cursor()
+                    _hashed_password = generate_password_hash(_password)
+                    cursor.callproc('sp_createUser', (_email, _hashed_password, _name, _gender, _grade))
+                    data = cursor.fetchall()
 
-                if len(data) is 0:
-                    conn.commit()
-                    return render_template('joinSuccess.html',join=_name + " 님의 아이디(이메일)은 '" +  _email + "' 입니다.")
+                    if len(data) is 0:
+                        conn.commit()
+                        return render_template('joinSuccess.html',join=_name + " 님의 아이디(이메일)은 '" +  _email + "' 입니다.")
+                    else:
+                        return render_template('error.html',error=str(data[0]))
                 else:
-                    return render_template('error.html',error=str(data[0]))
+                    return render_template('join.html',error="모든 항목을 다 채워주세요.")
+
+            except Exception as e:
+                return render_template('error.html', error=str(e))
+
+        else:
+            if session['user'] == None:
+                return render_template('join.html', name="join")
             else:
-                return render_template('join.html',error="모든 항목을 다 채워주세요.")
+                return render_template('error.html', error="로그아웃 후 가입을 시도해주세요.")
 
-        except Exception as e:
-            return render_template('error.html', error=str(e))
-
-    else:
-        return render_template('join.html', name="join")
 
 
 # 통계 화면
@@ -146,6 +151,7 @@ def joinIn():
 def stat():
     return render_template('stat.html', name="stat")
 
+# 로그아웃
 @app.route('/logout')
 def logout():
     session.pop('user',None)

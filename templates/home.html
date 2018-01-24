@@ -34,8 +34,8 @@
         </ul>
         <a class="ml-3 btn navbar-btn btn-primary" href="#">전자장부 시작하기</a>
 
-          {% if userName != "" %}
-            <a class="ml-3 btn navbar-btny btn-light" href="/logout">{{ userName }} 로그아웃</a>
+          {% if userName != null %}
+            <a class="ml-3 btn navbar-btny btn-light" href="/logout">{{ userName }}님 로그아웃</a>
           {% endif %}
 
       </div>
