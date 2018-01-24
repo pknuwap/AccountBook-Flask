@@ -28,7 +28,13 @@ def home_intro():
 # 회비납부 화면
 @app.route('/current')
 def current():
-    return render_template('current.html', name="current")
+    try:
+        if session.get('user'):
+            return render_template('current.html',userName=session.get('name'))
+        else:
+            return render_template('error.html', error="회비납부 현황을 볼 권한이 없습니다. 로그인 해주세요")
+    except Exception as e:
+        return render_template('error.html', error=str(e))
 
 # 장부화면
 # 기능
@@ -38,7 +44,7 @@ def current():
 def home_main():
     try:
         if session.get('user'):
-            _p_count = 20 # 몇개의 데이터를 보여줄것인가
+            _p_count = 20  # 몇개의 데이터를 보여줄것인가
 
             con = mysql.connect()
             cursor = con.cursor()
@@ -48,21 +54,23 @@ def home_main():
             account_list = []
             for account in account_book:
                 account_dict = {
-                    'account_id':account[0],
+                    'account_id': account[0],
                     'account_use_user': account[1],
                     'account_use_description': account[2],
                     'account_use_money': account[3],
                     'account_use_date': account[4],
-                    'account_write_date':account[5],
-                    'account_write_user':account[6],
+                    'account_write_date': account[5],
+                    'account_write_user': account[6],
                 }
                 account_list.append(account_dict)
 
-            return render_template('home.html', json_data=account_list, json_count=len(account_list), userName=session.get('name'))
+            return render_template('home.html', json_data=account_list, json_count=len(account_list),
+                                   userName=session.get('name'))
         else:
             return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
         return render_template('error.html', error=str(e))
+
 
 
 # 장부추가 아직 수정해야함, 예외처리 필요
@@ -179,7 +187,13 @@ def joinIn():
 # 통계 화면
 @app.route('/stat')
 def stat():
-    return render_template('stat.html', name="stat")
+    try:
+        if session.get('user'):
+            return render_template('stat.html',userName=session.get('name'))
+        else:
+            return render_template('error.html', error="장부통계를 볼 권한이 없습니다. 로그인 해주세요")
+    except Exception as e:
+        return render_template('error.html', error=str(e))
 
 # 로그아웃
 @app.route('/logout')
