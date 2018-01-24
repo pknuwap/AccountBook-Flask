@@ -162,7 +162,7 @@ function checkNumber()
         </div>
         <div class="modal-body" style="margin: 20px 20px 20px 20px">
           <h3 class="pb-3">장부작성 양식</h3>
-          <p>장부 저장 후 수정은 절대불가하니, 신중하게 작성해주세요.</p>
+          <p class="text-danger">장부 저장 후 수정은 절대불가하니, 신중하게 작성해주세요.<br>특수문자 사용은 절대 불가능합니다.</p>
           <form action="/addAccount" method="POST">
             <div class="form-group"> <label>사용자(특수문자 불가능)</label>
               <input type="text" class="form-control" placeholder="이태경" name="use_name" onKeyDown="checkNumber();"> </div>

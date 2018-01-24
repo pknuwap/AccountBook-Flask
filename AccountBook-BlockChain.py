@@ -72,11 +72,19 @@ def addAcount():
          if session.get('user'):
 
             _use_name = request.form['use_name']
-            _use_description = request.form['use_d']
-            _use_money = int(request.form['use_money'])
-            _use_date = int(request.form['use_date'])
+            _use_description = str(request.form['use_d']).replace("'","").replace("-","")
+            _use_money = request.form['use_money']
+            _use_date = request.form['use_date']
             _write_name = session.get('name')
             _write_date = int(datetime.today().strftime("%Y%m%d"))
+
+            if sec.check_password(_use_name, 1) or \
+                sec.check_password(_use_money, 1) or \
+                sec.check_password(_use_date, 1):
+                return render_template('error.html', error='특수문자 포함 금지')
+
+            _use_money = int(_use_money)
+            _use_date = int(_use_date)
 
             conn = mysql.connect()
             cursor = conn.cursor()
