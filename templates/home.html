@@ -10,9 +10,29 @@
 </head>
 
 <body>
+<script>
+function checkNumber()
+{
+ var objEv = event.srcElement;
+ var num ="{}[]()<>?_|~`!@#$%^&*-+\"'\\/ ";    //입력을 막을 특수문자 기재.
+ event.returnValue = true;
 
+ for (var i=0;i<objEv.value.length;i++)
+ {
+ if(-1 != num.indexOf(objEv.value.charAt(i)))
+ event.returnValue = false;
+ }
+
+ if (!event.returnValue)
+ {
+  alert("특수문자는 입력하실 수 없습니다.");
+  objEv.value="";
+ }
+}
+  </script>
 
   {% include 'include/navbar.html' %}
+
 
 
   <div class="py-5">
@@ -144,12 +164,12 @@
           <h3 class="pb-3">장부작성 양식</h3>
           <p>장부 저장 후 수정은 절대불가하니, 신중하게 작성해주세요.</p>
           <form action="/addAccount" method="POST">
-            <div class="form-group"> <label>사용자</label>
-              <input type="text" class="form-control" placeholder="이태경" name="use_name"> </div>
+            <div class="form-group"> <label>사용자(특수문자 불가능)</label>
+              <input type="text" class="form-control" placeholder="이태경" name="use_name" onKeyDown="checkNumber();"> </div>
             <div class="form-group"> <label>사용금액(원 생략, 숫자만 입력)</label>
-              <input type="number" class="form-control" placeholder="10000" name="use_money"> </div>
-            <div class="form-group"> <label>사용일(2018-01-01)</label>
-              <input type="number" class="form-control" name="use_date"> </div>
+              <input type="number" class="form-control" placeholder="10000" name="use_money" onKeyDown="checkNumber();"> </div>
+            <div class="form-group"> <label>사용일(20180101, 숫자만 입력)</label>
+              <input type="number" class="form-control" name="use_date" onKeyDown="checkNumber();"> </div>
             <div class="form-group"> <label>사용내역</label><textarea type="text" name="use_d" class="form-control" id="Textarea" rows="3" placeholder="사용내역을 간단히 입력해주세요"></textarea> </div>
             <button type="submit" class="btn mt-2 btn-dark">장부작성</button>
           </form>
@@ -173,6 +193,8 @@
       </div>
     </div>
   </div>
+
+
 
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -70,7 +70,7 @@ def home_main():
 def addAcount():
     try:
          if session.get('user'):
-            _user = session.get('user')
+
             _use_name = request.form['use_name']
             _use_description = request.form['use_d']
             _use_money = int(request.form['use_money'])
