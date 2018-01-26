@@ -116,6 +116,14 @@ CREATE TABLE `tbl_account` (
   PRIMARY KEY (`account_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
+# 장부검색 함수 (금액 많은 순)
+DELIMITER $$
+CREATE PROCEDURE `sp_muchUseMoney` (
+)
+BEGIN
+    SELECT * FROM tbl_account ORDER BY account_use_money DESC;
+END$$
+DELIMITER ;
 
 # 장부추가 함수 생성
 DELIMITER $$
