@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, session
+from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from flask_paginate import Pagination
 from datetime import datetime
 from flaskext.mysql import MySQL
