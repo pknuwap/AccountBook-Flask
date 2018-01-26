@@ -89,9 +89,20 @@ END$$
 
 DELIMITER ;
 
+# 장부 모든 장부보기 함수
+DELIMITER $$
+USE `accountBook`$$
+CREATE PROCEDURE `sp_GetAccountBookAll` (
+)
+BEGIN
+    SELECT * FROM tbl_account ORDER BY account_id DESC;
+END$$
+
+DELIMITER ;
 
 # 장부추가 함수 존재하면 삭제(장부추가함수명 : sp_addAccount)
 DROP procedure IF EXISTS `accountBook`.`sp_addAccount`;
+DROP procedure IF EXISTS `accountBook`.`sp_GetAccountBookAll`;
 
 # 장부 테이블 (tbl_account)
 CREATE TABLE `tbl_account` (

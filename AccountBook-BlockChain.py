@@ -1,12 +1,9 @@
 from flask import Flask, render_template, jsonify, request, redirect, session
-import json
-from textwrap import dedent
-from uuid import uuid4
-from blockchain import BlockChain
+from flask_paginate import Pagination
 from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-import sec
+import sec # 보안 설정
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -37,18 +34,14 @@ def current():
         return render_template('error.html', error=str(e))
 
 # 장부화면
-# 기능
-# db에서 가장 최근순으로 20개의 장부내역을 가져와야함
-# 정렬 기능(오래된, 사용금액, 사용일 순), 검색기능(내역에서) 포함해야함
 @app.route('/home')
 def home_main():
     try:
         if session.get('user'):
-            _p_count = 20  # 몇개의 데이터를 보여줄것인가
 
             con = mysql.connect()
             cursor = con.cursor()
-            cursor.callproc('sp_GetAccountBook', (_p_count,))
+            cursor.callproc('sp_GetAccountBookAll')
             account_book = cursor.fetchall()
 
             account_list = []
@@ -64,13 +57,25 @@ def home_main():
                 }
                 account_list.append(account_dict)
 
-            return render_template('home.html', json_data=account_list, json_count=len(account_list),
+            # page navibar
+            page = int(request.args.get('page', 1))
+            search = False
+            q = request.args.get('q')
+            if q:
+                search = True
+
+            show_account_list = account_list[(page - 1) * 10:(page - 1) * 10 + 10]
+
+            pagination = Pagination(page=page,
+                                    total=len(account_list), css_framework='bootstrap4',
+                                    search=search, per_page=10,display_msg=" ")
+
+            return render_template('home.html', show_account_list=show_account_list, pagination=pagination,
                                    userName=session.get('name'))
         else:
             return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
         return render_template('error.html', error=str(e))
-
 
 
 # 장부추가 아직 수정해야함, 예외처리 필요
@@ -86,9 +91,10 @@ def addAcount():
             _write_name = session.get('name')
             _write_date = int(datetime.today().strftime("%Y%m%d"))
 
-            if sec.check_password(_use_name, 1) or \
-                sec.check_password(_use_money, 1) or \
-                sec.check_password(_use_date, 1):
+            # 특수문자가 포함되어져 있는가 확인 bug fix
+            if (sec.check_password(_use_name, 1) or
+                sec.check_password(_use_money, 1) or
+                sec.check_password(_use_date, 1)) is False:
                 return render_template('error.html', error='특수문자 포함 금지')
 
             _use_money = int(_use_money)
@@ -109,6 +115,7 @@ def addAcount():
     except Exception as e:
         print(str(e))
         return render_template('error.html', error=str(e))
+
 
 # 로그인
 @app.route('/intro', methods=['POST','GET'])
@@ -147,6 +154,7 @@ def validateLogin():
             return render_template('intro.html', userName=str(session['name']))
         else:
             return render_template('intro.html')
+
 
 # 회원가입
 @app.route('/joinIn', methods=['POST', 'GET'])
@@ -195,15 +203,19 @@ def stat():
     except Exception as e:
         return render_template('error.html', error=str(e))
 
+
 # 로그아웃
 @app.route('/logout')
 def logout():
     session.pop('user',None)
     return redirect('/')
 
+
+# 에러처리
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html',error="404 페이지를 찾을 수 없습니다")
 
+# 프로그램 실행
 if __name__ == '__main__':
     app.run()

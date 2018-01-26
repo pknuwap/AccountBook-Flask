@@ -11,6 +11,7 @@
 
 <body>
 <script>
+
 function checkNumber()
 {
  var objEv = event.srcElement;
@@ -32,8 +33,6 @@ function checkNumber()
   </script>
 
   {% include 'include/navbar.html' %}
-
-
 
   <div class="py-5">
     <div class="container">
@@ -61,6 +60,7 @@ function checkNumber()
           </div>
         </div>
       </div>
+
       <div style="padding: 10px 5px 10px 3px;" align="right"> </div>
       <div class="row">
         <div class="col-md-12">
@@ -78,7 +78,7 @@ function checkNumber()
             </thead>
             <tbody>
 
-              {% for line in json_data %}
+              {% for line in show_account_list %}
                 <tr>
                 <td>{{ line.account_id }}</td>
                     <td>{{ line.account_use_user }}</td>
@@ -94,32 +94,12 @@ function checkNumber()
             </tbody>
           </table>
         </div>
-
-
-          <div align="center">
-          <ul class="pagination" >
-    <li class="page-item">
-      <a class="page-link text-dark" href="#" aria-label="Previous"> <span aria-hidden="true">«</span> <span class="sr-only">Previous</span> </a>
-    </li>
-    <li class="page-item" >
-      <a class="page-link text-dark" href="#">1</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link text-dark" href="#">2</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link text-dark" href="#">3</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link text-dark" href="#">4</a>
-    </li>
-    <li class="page-item">
-      <a class="page-link text-dark" href="#" aria-label="Next"> <span aria-hidden="true">»</span> <span class="sr-only">Next</span> </a>
-    </li>
-  </ul>
-          </div>
-
       </div>
+
+        <div>
+      {{ pagination.links }}
+      </div>
+
       <div class="row">
         <div class="col-md-12">
           <div style="padding: 10px 5px 10px 3px;" align="right">
