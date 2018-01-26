@@ -149,7 +149,7 @@ function checkNumber()
               <input type="number" class="form-control" placeholder="10000" name="use_money" onKeyDown="checkNumber();"> </div>
             <div class="form-group"> <label>사용일(20180101, 숫자만 입력)</label>
               <input type="number" class="form-control" name="use_date" onKeyDown="checkNumber();"> </div>
-            <div class="form-group"> <label>사용내역</label><textarea type="text" name="use_d" class="form-control" id="Textarea" rows="3" placeholder="사용내역을 간단히 입력해주세요"></textarea> </div>
+            <div class="form-group"> <label>사용내역(짧고 간단하게 입력)</label><textarea type="text" name="use_d" class="form-control" id="Textarea" rows="2" maxlength="100" placeholder="사용내역을 간단히 입력해주세요"></textarea> </div>
             <button type="submit" class="btn mt-2 btn-dark">장부작성</button>
           </form>
         </div>

@@ -56,8 +56,6 @@ def home_main():
             search_option = request.args.get('inputSearch')
             search_content = request.args.get('inputSearchContent')
 
-            print(search_content)
-
             if search_option == "account_use_user":
                 cursor.callproc('sp_search',(0, search_content))
             elif search_option == "account_write_user":
