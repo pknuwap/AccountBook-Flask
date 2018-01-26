@@ -23,7 +23,7 @@ def dashboard():
                            total=len(File), css_framework='bootstrap4',
                            search=search, per_page=20)
 
-    return render_template('test.html', files=files, pagination=pagination)
+    return render_template('home.html', files=files, pagination=pagination)
 
 
 if __name__ == '__main__':
