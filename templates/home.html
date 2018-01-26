@@ -163,12 +163,31 @@ function checkNumber()
           <h5 class="modal-title">WAP 장부내역 검색</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
         </div>
+          <form class="form-horizontal" role="form" method="GET" action="/home">
         <div class="modal-body">
-          <p>검색할 검색어를 입력해주세요.
-            <br> </p><textarea class="form-control" id="Textarea" rows="3" placeholder="검색어를 입력해주세요"></textarea> </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-dark">검색</button>
+            <div class="form-group">
+                <div class="col">
+                    <p>어떤것을 검색하시겠어요 ?</p>
+                    <select class="form-control" name="inputSearch">
+                        <option value="account_use_user">사용자</option>
+                        <option value="account_write_user">장부작성자</option>
+                        <option value="account_use_description">장부내역</option>
+                        <option value="account_use_date">사용일</option>
+                        <option value="account_write_date">장부작성일</option>
+                    </select>
+                    <br>
+                            <p>검색할 검색어를 입력해주세요.
+            </p><textarea class="form-control" name="inputSearchContent" id="Textarea" rows="2" placeholder="검색어를 입력해주세요"></textarea> </div>
+
+                </div>
+
+            </div>
+
+          <div class="modal-footer">
+               <button type="submit" class="btn btn-dark">검색</button>
         </div>
+          </form>
+
       </div>
     </div>
   </div>

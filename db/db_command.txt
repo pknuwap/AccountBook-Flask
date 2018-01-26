@@ -116,7 +116,7 @@ CREATE TABLE `tbl_account` (
   PRIMARY KEY (`account_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-# 장부검색 함수 (금액 많은 순)
+# 장부정렬 함수 (금액 많은 순)
 DELIMITER $$
 CREATE PROCEDURE `sp_muchUseMoney` (
 )
@@ -125,7 +125,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-# 장부검색함수 (거래일 기준 최신순)
+# 장부정렬함수 (거래일 기준 최신순)
 DELIMITER $$
 CREATE PROCEDURE `sp_lastDay` (
 )
@@ -134,6 +134,66 @@ BEGIN
 END$$
 DELIMITER ;
 
+# 장부 검색 함수(모든것)
+
+DROP procedure IF EXISTS `accountBook`.`sp_search`;
+
+DELIMITER $$
+CREATE PROCEDURE `sp_search` (
+IN p_search_number INT(11),
+IN p_search_content VARCHAR(200)
+)
+BEGIN
+
+IF p_search_number = 0 THEN
+    select * from tbl_account where account_use_user like concat('%',p_search_content,'%');
+
+ELSEIF p_search_number = 1 THEN
+select * from tbl_account where account_write_user like concat('%',p_search_content,'%');
+
+ELSEIF p_search_number = 2 THEN
+select * from tbl_account where account_use_description like concat('%',p_search_content,'%');
+
+ELSEIF p_search_number = 3 THEN
+select * from tbl_account where account_use_date like concat('%',p_search_content,'%');
+
+ELSEIF p_search_number = 4 THEN
+select * from tbl_account where account_write_date like concat('%',p_search_content,'%');
+
+ELSE
+select * from tbl_account;
+
+END IF;
+
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE `sp_lastDay` (
+)
+BEGIN
+    SELECT * FROM tbl_account ORDER BY account_use_date DESC;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `sp_lastDay` (
+)
+BEGIN
+    SELECT * FROM tbl_account ORDER BY account_use_date DESC;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `sp_lastDay` (
+)
+BEGIN
+    SELECT * FROM tbl_account ORDER BY account_use_date DESC;
+END$$
+DELIMITER ;
+
+select * from tbl_account where account_use_user like '%이태%';
 
 
 

@@ -42,21 +42,34 @@ def home_main():
             con = mysql.connect()
             cursor = con.cursor()
 
+            # 정렬
             sort = request.args.get('sort')
-            print(sort)
             if sort =="muchmoney":
                 cursor.callproc('sp_muchUseMoney')
             elif sort == "oldday":
                 cursor.callproc('sp_oldDay')
             elif sort=="lastday":
                 cursor.callproc('sp_lastDay')
-
             else:
                 cursor.callproc('sp_GetAccountBookAll')
 
+            search_option = request.args.get('inputSearch')
+            search_content = request.args.get('inputSearchContent')
+
+            print(search_content)
+
+            if search_option == "account_use_user":
+                cursor.callproc('sp_search',(0, search_content))
+            elif search_option == "account_write_user":
+                cursor.callproc('sp_search', (1, search_content))
+            elif search_option == "account_use_description":
+                cursor.callproc('sp_search', (2, search_content))
+            elif search_option == "account_use_date":
+                cursor.callproc('sp_search', (3, search_content))
+            elif search_option == "account_write_date":
+                cursor.callproc('sp_search', (4, search_content))
 
             account_book = cursor.fetchall()
-
             account_list = []
             for account in account_book:
                 account_dict = {
@@ -82,7 +95,7 @@ def home_main():
 
             pagination = Pagination(page=page,
                                     total=len(account_list), css_framework='bootstrap4',
-                                    search=search, per_page=10,display_msg=" ")
+                                    search=search, per_page=10,alignment="center")
 
             return render_template('home.html', show_account_list=show_account_list, pagination=pagination,
                                    userName=session.get('name'))
