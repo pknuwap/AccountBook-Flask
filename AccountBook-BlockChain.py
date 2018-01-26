@@ -41,7 +41,20 @@ def home_main():
 
             con = mysql.connect()
             cursor = con.cursor()
-            cursor.callproc('sp_GetAccountBookAll')
+
+            sort = request.args.get('sort')
+            print(sort)
+            if sort =="muchmoney":
+                cursor.callproc('sp_muchUseMoney')
+            elif sort == "oldday":
+                cursor.callproc('sp_oldDay')
+            elif sort=="lastday":
+                cursor.callproc('sp_lastDay')
+
+            else:
+                cursor.callproc('sp_GetAccountBookAll')
+
+
             account_book = cursor.fetchall()
 
             account_list = []
@@ -59,6 +72,7 @@ def home_main():
 
             # page navibar
             page = int(request.args.get('page', 1))
+
             search = False
             q = request.args.get('q')
             if q:

@@ -106,11 +106,10 @@ function checkNumber()
             <div class="btn-group">
               <button class="btn dropdown-toggle btn-dark" data-toggle="dropdown">정렬방식</button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">최신순</a>
+                <a class="dropdown-item" href="/home">최신순(장부작성일)</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">오래된순</a>
-                <a class="dropdown-item" href="#">사용금액순</a>
-                <a class="dropdown-item" href="#">사용일순</a>
+                <a class="dropdown-item" href="/home?sort=muchmoney">사용금액순(거래금액)</a>
+                <a class="dropdown-item" href="/home?sort=lastday">사용일순(거래일)</a>
               </div>
               <div style="padding: 0px 0px 0px 5px">
                 <a class="btn btn-dark" href="" data-target="#searchm" data-toggle="modal">장부검색</a>

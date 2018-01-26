@@ -125,6 +125,18 @@ BEGIN
 END$$
 DELIMITER ;
 
+# 장부검색함수 (거래일 기준 최신순)
+DELIMITER $$
+CREATE PROCEDURE `sp_lastDay` (
+)
+BEGIN
+    SELECT * FROM tbl_account ORDER BY account_use_date DESC;
+END$$
+DELIMITER ;
+
+
+
+
 # 장부추가 함수 생성
 DELIMITER $$
 USE `accountBook`$$
