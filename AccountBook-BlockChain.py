@@ -17,10 +17,6 @@ mysql.init_app(app)
 
 app.secret_key = '???'
 
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
 # 홈화면
 @app.route('/')
 def home_intro():
@@ -222,32 +218,8 @@ def joinIn():
 
 
 # 통계 화면
-# 그래프 추가, 기능추가해야함
-# db에서 가져오는것 또한 해야함
 @app.route('/stat')
 def stat():
-
-    # 차트 라벨(X축 담당)
-    labels = [
-        'JAN', 'FEB', 'MAR', 'APR',
-        'MAY', 'JUN', 'JUL', 'AUG',
-        'SEP', 'OCT', 'NOV', 'DEC'
-    ]
-
-    # 차트 샘플 값
-    values = [
-        967.67, 1190.89, 1079.75, 1349.19,
-        2328.91, 2504.28, 2873.83, 4764.87,
-        4349.29, 6458.30, 9907, 16297
-    ]
-
-    # 차트 색상
-    colors = [
-        "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
-        "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
-        "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
-
-
     try:
         if session.get('user'):
 
