@@ -2,9 +2,16 @@
 <html>
 
 <head>
+    <style>
+        .chart-container{
+            max-width: 600px;
+            max-height: 400px;
+        }
+    </style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+  <script src="../static/js/Chart.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="../static/main.css" type="text/css">
     <title>WAP 전자장부 통계</title>
@@ -30,50 +37,101 @@
   </div>
   <hr>
 
-  <center>
-      <h1>{{ title }}</h1>
-  </center>
+  <div class="chart-container" style="position: relative; height:40vh; width:80vw">
 
-  <center>
-      <canvas id="chart" width="800" height="500"></canvas>
-  <script>
-      // this is bar graph
-      var barData = {
-          labels : [
-              {% for item in labels %}
-                  "{{ item }}",
-              {% endfor %}
-          ],
+      <center>
+          <h1>WAP 월 별 예산</h1>
+      </center>
 
-          datasets : [{
-              fillColor : "rbga(151,187,205,0.2)",
-              strokeColor : "rbga(151,187,205,1)",
-              pointColor : "rbga(151,187,205,1)",
-              data : [
-                  {% for item in values %}
-                      "{{ item }}",
-                  {% endfor %}
-              ]
-          }]
-      };
+      <canvas id="wapMonthBudgetLineChart"></canvas>
+      <center>
 
-      var mychart = document.getElementById("chart").getContext("2d");
-        steps = 10;
-        max = {{ max }}
+          <script>
+              var ctx = document.getElementById("wapMonthBudgetLineChart").getContext("2d");
 
-      new Chart(mychart).Bar(barData,{
-          scaleOverride: true,
-          scaleSteps: steps,
-          scaleStepWidth: Math.ceil(max / steps),
-          scaleStartValue: 0,
-          scaleShowVerticalLines: true,
-          scaleShowGridLines : true,
-          barShowStroke : true,
-          scaleShowLabels: true
-      });
-  </script>
+              var myData = {
+                  labels : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  datasets :[{
+                      borderColor: 'rgba(128,128,128,0.8)',
+                      pointBackgroundColor : 'rgba(128,128,128,1)',
+                      label: "남은 예산(단위 : 원)",
+                      lineTension : 0,
+                      fill : false,
+                      data : [967.67, 1190.89, 1079.75, 1349.19, 2328.91, 2504.28, 2873.83, 4764.87, 4349.29, 6458.30, 9907, 16297]
+                  }]
+              };
 
-  </center>
+              var chartOptions = {
+                  legend: {
+                      display: true,
+                      position: 'top',
+                      labels: {
+                          boxWidth: 80,
+                          fontColor: 'black'
+                      }
+                  }
+              };
+
+              var lineChart = new Chart(ctx, {
+                  type : 'line',
+                  data : myData,
+                  oprtions: chartOptions
+              });
+          </script>
+
+      </center>
+  </div>
+
+  <br/>
+  <br/>
+
+  <hr>
+
+  <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+      <center>
+          <h1>WAP 장부 수정 기록</h1>
+      </center>
+
+      <canvas id="wapMonthWriteFrequencyLineChart"></canvas>
+      <center>
+
+          <script>
+              var ctx = document.getElementById("wapMonthWriteFrequencyLineChart").getContext("2d");
+
+              var myData = {
+                  labels : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  datasets :[{
+                      borderColor: 'rgba(128,128,128,0.8)',
+                      pointBackgroundColor : 'rgba(128,128,128,1)',
+                      label: "수정 수(단위: 횟수)",
+                      lineTension : 0,
+                      fill : false,
+                      data : [3, 5, 8, 2, 7, 10, 12, 15, 10, 11, 20, 8]
+                  }]
+              };
+
+              var chartOptions = {
+                  legend: {
+                      display: true,
+                      position: 'top',
+                      labels: {
+                          boxWidth: 80,
+                          fontColor: 'black'
+                      }
+                  }
+              };
+
+              var lineChart = new Chart(ctx, {
+                  type : 'line',
+                  data : myData,
+                  oprtions: chartOptions
+              });
+          </script>
+
+      </center>
+  </div>
+
+
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>

@@ -10,33 +10,12 @@ app = Flask(__name__)
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlxorud7202'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'kk2924140'
 app.config['MYSQL_DATABASE_DB'] = 'accountBook'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 app.secret_key = '???'
-
-# 차트 라벨(X축 담당)
-labels = [
-    'JAN', 'FEB', 'MAR', 'APR',
-    'MAY', 'JUN', 'JUL', 'AUG',
-    'SEP', 'OCT', 'NOV', 'DEC'
-]
-
-# 차트 샘플 값
-values = [
-    967.67, 1190.89, 1079.75, 1349.19,
-    2328.91, 2504.28, 2873.83, 4764.87,
-    4349.29, 6458.30, 9907, 16297
-]
-
-# 차트 색상
-colors = [
-    "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
-    "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
-    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
-
 
 # 홈화면
 @app.route('/')
@@ -243,9 +222,8 @@ def joinIn():
 def stat():
     try:
         if session.get('user'):
-            bar_labels = labels
-            bar_values = values
-            return render_template('stat.html', title='WAP 예산', max=17000, labels=bar_labels, values=bar_values, username=session.get('user'))
+
+            return render_template('stat.html', username=session.get('user'))
         else:
             return render_template('error.html', error="장부통계를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
