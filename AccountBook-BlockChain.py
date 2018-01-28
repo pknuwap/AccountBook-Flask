@@ -235,6 +235,8 @@ def stat():
             accountValuesList = []
 
             # data Extract
+            # if문을 통해 DB 에서 긁어온 account_use_date의 달별로  totalUseMoneyPerMonthList 에 append
+            # 다른 방법을 써야할 것 같다.
 
             for account in accountValue:
                 accountValuesDic = {
