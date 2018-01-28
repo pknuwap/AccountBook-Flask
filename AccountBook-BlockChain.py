@@ -223,7 +223,180 @@ def stat():
     try:
         if session.get('user'):
 
-            return render_template('stat.html', username=session.get('user'))
+            totalUseMoneyPerMonth = 0
+            totalUseMoneyPerMonthList = []
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            cursor.callproc('sp_muchUseMoney')
+
+            accountValue = cursor.fetchall()
+            accountValuesList = []
+
+            # data Extract
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201801:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201802:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201803:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201804:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201805:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201806:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201807:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201808:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201809:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201810:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201811:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            for account in accountValue:
+                accountValuesDic = {
+                    'account_use_money':account[3],
+                    'account_use_date':account[4]
+                }
+                accountValuesList.append(accountValuesDic)
+
+                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201812:
+                    totalUseMoneyPerMonth += account[3]
+
+            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
+            totalUseMoneyPerMonth = 0
+
+            print(totalUseMoneyPerMonthList)
+
+            bar_values = totalUseMoneyPerMonthList
+
+            return render_template('stat.html', values= bar_values,username=session.get('user'))
         else:
             return render_template('error.html', error="장부통계를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
