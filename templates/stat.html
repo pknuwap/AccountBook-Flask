@@ -2,12 +2,14 @@
 <html>
 
 <head>
-    <style>
+
+  <style>
         .chart-container{
             max-width: 600px;
             max-height: 400px;
         }
-    </style>
+  </style>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
@@ -37,6 +39,7 @@
   </div>
   <hr>
 
+  <center>
   <div class="chart-container" style="position: relative; height:40vh; width:80vw">
 
       <center>
@@ -75,21 +78,24 @@
               var lineChart = new Chart(ctx, {
                   type : 'line',
                   data : myData,
-                  oprtions: chartOptions
+                  options: chartOptions
               });
           </script>
 
       </center>
   </div>
+  </center>
 
+  <br/>
   <br/>
   <br/>
 
   <hr>
 
-  <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+  <center>
+  <div class="chart-container" style="position: relative; height:40vh; width:90vw">
       <center>
-          <h1>WAP 장부 수정 기록</h1>
+          <h1>WAP 월별 장부 기록 빈도 및 예산 사용 빈도</h1>
       </center>
 
       <canvas id="wapMonthWriteFrequencyLineChart"></canvas>
@@ -124,26 +130,71 @@
               var lineChart = new Chart(ctx, {
                   type : 'line',
                   data : myData,
-                  oprtions: chartOptions
+                  options: chartOptions
               });
           </script>
-
       </center>
   </div>
+  </center>
 
 
+  <br/>
+  <br/>
+  <br/>
+  <br/>
 
-    <div class="py-5 bg-dark text-white">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 mt-3 text-center">
-          <p>© Copyright 2017 WAP - All rights reserved.
-            <br> </p>
-        </div>
-      </div>
-    </div>
+  <hr>
+
+  <br/>
+
+  <center>
+  <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
+      <center>
+          <h1> WAP 달 별 수입 및 지출 </h1>
+      </center>
+
+      <center>
+          <canvas id="wapMonthIncomeOutcomeBarChart"></canvas>
+          <script>
+              var chartCanvas = document.getElementById("wapMonthIncomeOutcomeBarChart");
+
+              var incomeData = {
+                  label: '수입(단위 : 원)',
+                  data: [54270, 52430, 55140, 39330, 13260, 6870, 12710, 16380, 48140, 39330, 34270, 42430],
+                  backgroundColor: 'rgba(0,0,255,0.6)',
+                  borderWidth: 0
+              };
+
+              var outcomeData = {
+                  label: '지출(단위 : 원)',
+                  data: [37000, 8900, 9800, 37000, 23100, 9000, 8700, 11000, 37000, 29000, 50800, 35000],
+                  backgroundColor: 'rgba(255,0,0,0.6)',
+                  borderWidth: 0
+              };
+
+              var totalData = {
+                  labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  datasets: [incomeData, outcomeData]
+              };
+
+              var chartOptions = {
+                  scales: {
+                      xAxes: [{
+                          barPercentage: 1,
+                          categoryPercentage: 0.6
+                      }]
+                  }
+              };
+
+              var barChart = new Chart(chartCanvas, {
+                  type: 'bar',
+                  data: totalData,
+                  options: chartOptions
+              });
+          </script>
+      </center>
   </div>
-
+  </center>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>

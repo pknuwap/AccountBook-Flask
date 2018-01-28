@@ -236,11 +236,6 @@ def logout():
     session.pop('user',None)
     return redirect('/')
 
-# test
-@app.route('/test')
-def test():
-    return render_template('test.html')
-
 
 # 에러처리
 @app.errorhandler(404)
