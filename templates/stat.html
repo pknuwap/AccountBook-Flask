@@ -112,7 +112,11 @@
                       label: "수정 수(단위: 횟수)",
                       lineTension : 0,
                       fill : false,
-                      data : [3, 5, 8, 2, 7, 10, 12, 15, 10, 11, 20, 8]
+                      data : [
+                          {% for item in Frequency_Values %}
+                              "{{ item }}",
+                          {% endfor %}
+                      ]
                   }]
               };
 
@@ -167,7 +171,11 @@
 
               var outcomeData = {
                   label: '지출(단위 : 원)',
-                  data: [37000, 8900, 9800, 37000, 23100, 9000, 8700, 11000, 37000, 29000, 50800, 35000],
+                  data: [
+                      {% for item in values %}
+                          "{{ item }}",
+                      {% endfor %}
+                  ],
                   backgroundColor: 'rgba(255,0,0,0.6)',
                   borderWidth: 0
               };
