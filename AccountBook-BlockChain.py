@@ -105,6 +105,8 @@ def home_main():
 
 
 # 장부추가 아직 수정해야함, 예외처리 필요
+# null 이였을때 처리 필요
+
 @app.route('/addAccount', methods=['POST'])
 def addAcount():
     try:
@@ -223,6 +225,7 @@ def joinIn():
 # db에서 가져오는것 또한 해야함
 @app.route('/stat')
 def stat():
+
 
     # 차트 라벨(X축 담당)
     labels = [

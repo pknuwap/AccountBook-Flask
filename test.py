@@ -1,30 +1,14 @@
 from flask import Blueprint, Flask, request, render_template, url_for,  Session
 from flask_paginate import Pagination, get_page_parameter, get_page_args
 
-app = Flask(__name__)
+# data Extract
+ym = [201801, 201802, 201803, 201804, 201805, 201806, 201807, 201808, 201809, 201810, 201811, 201812]
+per_month_use_money = []
+accountValue = [[20180303,20180201],[20180404,20180901]]
+for account in accountValue:
 
-@app.route('/')
-def dashboard():
-    page = int(request.args.get('page', 1))
-
-    File=[]
-    for i in range(1, 50):
-        file_dict = {"username":str(i), "title":str(i)}
-        File.append(file_dict)
-
-    files=File[(page-1)*20:(page-1)*20+20]
-
-    search = False
-    q = request.args.get('q')
-    if q:
-        search = True
-
-    pagination = Pagination(page=page,
-                           total=len(File), css_framework='bootstrap4',
-                           search=search, per_page=20)
-
-    return render_template('home.html', files=files, pagination=pagination)
-
-
-if __name__ == '__main__':
-    app.run()
+    use_money = account[0]  # 10000
+    use_date = account[1]  # 20180909
+    for date in ym:  # 201809
+        if int(use_date / 100) == date:
+            per_month_use_money[date] += use_money
