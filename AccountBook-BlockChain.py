@@ -104,6 +104,8 @@ def home_main():
 
 
 # 장부추가 아직 수정해야함, 예외처리 필요
+# null 이였을때 처리 필요
+
 @app.route('/addAccount', methods=['POST'])
 def addAcount():
     try:
@@ -226,8 +228,18 @@ def stat():
             totalUseMoneyPerMonth = 0
             totalUseMoneyPerMonthList = []
 
+<<<<<<< HEAD
             conn = mysql.connect()
             cursor = conn.cursor()
+=======
+
+    # 차트 라벨(X축 담당)
+    labels = [
+        'JAN', 'FEB', 'MAR', 'APR',
+        'MAY', 'JUN', 'JUL', 'AUG',
+        'SEP', 'OCT', 'NOV', 'DEC'
+    ]
+>>>>>>> upstream/master
 
             cursor.callproc('sp_muchUseMoney')
 
