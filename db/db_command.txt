@@ -113,6 +113,7 @@ CREATE TABLE `tbl_account` (
   `account_use_date` int(11) DEFAULT NULL,
 `account_write_date` int(11) DEFAULT NULL,
 `account_write_user` varchar(45) DEFAULT NULL,
+`account_use_option` int(11) DEFAULT NULL,
   PRIMARY KEY (`account_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
@@ -206,7 +207,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addAccount`(
 IN p_use_money INT,
 IN p_use_date INT,
 IN p_write_date INT,
-IN p_write_user varchar(45)
+IN p_write_user varchar(45),
+IN p_use_option INT
 )
 BEGIN
     insert into tbl_account(
@@ -215,7 +217,8 @@ BEGIN
         account_use_money,
 	account_use_date,
 	account_write_date,
-	account_write_user
+	account_write_user,
+	account_use_option
     )
     values
     (
@@ -224,7 +227,8 @@ BEGIN
         p_use_money,
 	p_use_date,
 	p_write_date,
-	p_write_user
+	p_write_user,
+	p_use_option
     );
 END$$
 
