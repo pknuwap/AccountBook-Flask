@@ -2,9 +2,18 @@
 <html>
 
 <head>
+
+  <style>
+        .chart-container{
+            max-width: 600px;
+            max-height: 400px;
+        }
+  </style>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+  <script src="../static/js/Chart.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="../static/main.css" type="text/css">
     <title>WAP 전자장부 통계</title>
@@ -36,11 +45,12 @@
           <form class="form-inline" method="GET">
             <div class="input-group">
                     <select class="form-control" name="inputYear">
+                        <option value="2018">2018</option>
                         <option value="2017">2017</option>
                         <option value="2016">2016</option>
                     </select>
               <div class="input-group-append">
-                <button class="btn btn-dark" type="button">보기</button>
+                <button type="submit" class="btn btn-dark" >보기</button>
               </div>
             </div>
 
@@ -57,61 +67,181 @@
 
 
   <center>
-      <h1>{{ title }}</h1>
+  <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+
+      <center>
+          <h1>WAP 월 별 예산</h1>
+      </center>
+
+      <canvas id="wapMonthBudgetLineChart"></canvas>
+      <center>
+
+          <script>
+              var ctx = document.getElementById("wapMonthBudgetLineChart").getContext("2d");
+
+              var myData = {
+                  labels : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  datasets :[{
+                      borderColor: 'rgba(128,128,128,0.8)',
+                      pointBackgroundColor : 'rgba(128,128,128,1)',
+                      label: "남은 예산(단위 : 원)",
+                      lineTension : 0,
+                      fill : false,
+                      data : [967.67, 1190.89, 1079.75, 1349.19, 2328.91, 2504.28, 2873.83, 4764.87, 4349.29, 6458.30, 9907, 16297]
+                  }]
+              };
+
+              var chartOptions = {
+                  legend: {
+                      display: true,
+                      position: 'top',
+                      labels: {
+                          boxWidth: 80,
+                          fontColor: 'black'
+                      }
+                  }
+              };
+
+              var lineChart = new Chart(ctx, {
+                  type : 'line',
+                  data : myData,
+                  options: chartOptions
+              });
+          </script>
+
+      </center>
+  </div>
   </center>
+
+  <br/>
+  <br/>
+  <br/>
+
+  <hr>
 
   <center>
-      <canvas id="chart" width="800" height="500"></canvas>
-  <script>
-      // this is bar graph
-      var barData = {
-          labels : [
-              {% for item in labels %}
-                  "{{ item }}",
-              {% endfor %}
-          ],
+  <div class="chart-container" style="position: relative; height:40vh; width:90vw">
+      <center>
+          <h1>WAP 월별 장부 기록 빈도 및 예산 사용 빈도</h1>
+      </center>
 
-          datasets : [{
-              fillColor : "rbga(151,187,205,0.2)",
-              strokeColor : "rbga(151,187,205,1)",
-              pointColor : "rbga(151,187,205,1)",
-              data : [
-                  {% for item in values %}
-                      "{{ item }}",
-                  {% endfor %}
-              ]
-          }]
-      };
+      <canvas id="wapMonthWriteFrequencyLineChart"></canvas>
+      <center>
 
-      var mychart = document.getElementById("chart").getContext("2d");
-        steps = 10;
-        max = {{ max }}
+          <script>
+              var ctx = document.getElementById("wapMonthWriteFrequencyLineChart").getContext("2d");
 
-      new Chart(mychart).Bar(barData,{
-          scaleOverride: true,
-          scaleSteps: steps,
-          scaleStepWidth: Math.ceil(max / steps),
-          scaleStartValue: 0,
-          scaleShowVerticalLines: true,
-          scaleShowGridLines : true,
-          barShowStroke : true,
-          scaleShowLabels: true
-      });
-  </script>
+              var myData = {
+                  labels : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  datasets :[{
+                      borderColor: 'rgba(128,128,128,0.8)',
+                      pointBackgroundColor : 'rgba(128,128,128,1)',
+                      label: "사용 수(단위: 횟수)",
+                      lineTension : 0,
+                      fill : false,
+                      data : [
+                          {% for item in Use_Frequency_Values %}
+                              "{{ item }}",
+                          {% endfor %}
+                      ]
+                  },{
+                      borderColor: 'rgba(167,54,152,0.8)',
+                      backgroundColor : 'rgba(167,54,152,0.8)',
+                      pointBackgroundColor : 'rgba(167,54,152,1)',
+                      label: "기록 수(단위 : 횟수)",
+                      lineTension : 0,
+                      fill : false,
+                      data : [
+                          {% for item in Write_Frequency_Values %}
+                              "{{ item }}",
+                          {% endfor %}
+                      ]
+                  }]
+              };
 
+              var chartOptions = {
+                  legend: {
+                      display: true,
+                      position: 'top',
+                      labels: {
+                          boxWidth: 80,
+                          fontColor: 'black'
+                      }
+                  }
+              };
+
+              var lineChart = new Chart(ctx, {
+                  type : 'line',
+                  data : myData,
+                  options: chartOptions
+              });
+          </script>
+      </center>
+  </div>
   </center>
 
-    <div class="py-5 bg-dark text-white">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 mt-3 text-center">
-          <p>© Copyright 2017 WAP - All rights reserved.
-            <br> </p>
-        </div>
-      </div>
-    </div>
-  </div>
 
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+
+  <hr>
+
+  <br/>
+
+  <center>
+  <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
+      <center>
+          <h1> WAP 달 별 수입 및 지출 </h1>
+      </center>
+
+      <center>
+          <canvas id="wapMonthIncomeOutcomeBarChart"></canvas>
+          <script>
+              var chartCanvas = document.getElementById("wapMonthIncomeOutcomeBarChart");
+
+              var incomeData = {
+                  label: '수입(단위 : 원)',
+                  data: [54270, 52430, 55140, 39330, 13260, 6870, 12710, 16380, 48140, 39330, 34270, 42430],
+                  backgroundColor: 'rgba(0,0,255,0.6)',
+                  borderWidth: 0
+              };
+
+              var outcomeData = {
+                  label: '지출(단위 : 원)',
+                  data: [
+                      {% for item in values %}
+                          "{{ item }}",
+                      {% endfor %}
+                  ],
+                  backgroundColor: 'rgba(255,0,0,0.6)',
+                  borderWidth: 0
+              };
+
+              var totalData = {
+                  labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  datasets: [incomeData, outcomeData]
+              };
+
+              var chartOptions = {
+                  scales: {
+                      xAxes: [{
+                          barPercentage: 1,
+                          categoryPercentage: 0.6
+                      }]
+                  }
+              };
+
+              var barChart = new Chart(chartCanvas, {
+                  type: 'bar',
+                  data: totalData,
+                  options: chartOptions
+              });
+          </script>
+      </center>
+  </div>
+  </center>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>

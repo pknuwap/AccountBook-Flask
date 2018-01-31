@@ -10,13 +10,12 @@ app = Flask(__name__)
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlxorud7202'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'kk2924140'
 app.config['MYSQL_DATABASE_DB'] = 'accountBook'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 app.secret_key = '???'
-
 
 # 홈화면
 @app.route('/')
@@ -58,7 +57,7 @@ def home_main():
             search_content = request.args.get('inputSearchContent')
 
             if search_option == "account_use_user":
-                cursor.callproc('sp_search',(0, search_content))
+                cursor.callproc('sp_search', (0, search_content))
             elif search_option == "account_write_user":
                 cursor.callproc('sp_search', (1, search_content))
             elif search_option == "account_use_description":
@@ -105,8 +104,6 @@ def home_main():
 
 
 # 장부추가 아직 수정해야함, 예외처리 필요
-# null 이였을때 처리 필요
-
 @app.route('/addAccount', methods=['POST'])
 def addAcount():
     try:
@@ -221,38 +218,57 @@ def joinIn():
 
 
 # 통계 화면
-# 그래프 추가, 기능추가해야함
-# db에서 가져오는것 또한 해야함
 @app.route('/stat')
 def stat():
-
-
-    # 차트 라벨(X축 담당)
-    labels = [
-        'JAN', 'FEB', 'MAR', 'APR',
-        'MAY', 'JUN', 'JUL', 'AUG',
-        'SEP', 'OCT', 'NOV', 'DEC'
-    ]
-
-    # 차트 샘플 값
-    values = [
-        967.67, 1190.89, 1079.75, 1349.19,
-        2328.91, 2504.28, 2873.83, 4764.87,
-        4349.29, 6458.30, 9907, 16297
-    ]
-
-    # 차트 색상
-    colors = [
-        "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
-        "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
-        "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
-
-
     try:
         if session.get('user'):
-            bar_labels = labels
-            bar_values = values
-            return render_template('stat.html', title='WAP 예산', max=17000, labels=bar_labels, values=bar_values, username=session.get('user'))
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            search_option = request.args.get('inputYear')
+
+            # set value for chart
+            per_month_use_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            per_month_income = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            per_month_use_frequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            per_month_write_frequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            per_month_budget = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+            if search_option is None:
+                search_option = "2018"
+
+            if search_option == "2018":
+                cursor.callproc('sp_search_stat', '0')
+            elif search_option == "2017":
+                cursor.callproc('sp_search_stat', '1')
+            elif search_option == "2016":
+                cursor.callproc('sp_search_stat', '2')
+
+            accountValue = cursor.fetchall()
+
+            # data Extract
+
+            for account in accountValue:
+                account_use_money = account[3]
+                account_use_date = account[4]
+                account_write_date = account[5]
+
+                for date in month:
+                    if int(int(account_use_date/100) - (int(search_option) * 100)) == date:
+                        per_month_use_money[date-1] += int(account_use_money)
+                        per_month_use_frequency[date-1] += 1
+
+                    if int(int(account_write_date/100) - (int(search_option) * 100)) == date:
+                        per_month_write_frequency[date-1] += 1
+
+
+            barValue_spend = per_month_use_money
+            lineValue_frequency_use = per_month_use_frequency
+            lineValue_frequency_write = per_month_write_frequency
+
+            return render_template('stat.html',values=barValue_spend, Write_Frequency_Values = lineValue_frequency_write, Use_Frequency_Values= lineValue_frequency_use, username=session.get('user'))
         else:
             return render_template('error.html', error="장부통계를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
@@ -265,13 +281,8 @@ def logout():
     session.pop('user',None)
     return redirect('/')
 
-# test
-@app.route('/test')
-def test():
-    return render_template('test.html')
 
-
-# 에러처리
+# 에러처리,
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html',error="404 페이지를 찾을 수 없습니다")
