@@ -57,7 +57,7 @@ def home_main():
             search_content = request.args.get('inputSearchContent')
 
             if search_option == "account_use_user":
-                cursor.callproc('sp_search',(0, search_content))
+                cursor.callproc('sp_search', (0, search_content))
             elif search_option == "account_write_user":
                 cursor.callproc('sp_search', (1, search_content))
             elif search_option == "account_use_description":
@@ -104,8 +104,6 @@ def home_main():
 
 
 # 장부추가 아직 수정해야함, 예외처리 필요
-# null 이였을때 처리 필요
-
 @app.route('/addAccount', methods=['POST'])
 def addAcount():
     try:
@@ -225,192 +223,36 @@ def stat():
     try:
         if session.get('user'):
 
-            totalUseMoneyPerMonth = 0
-            totalUseMoneyPerMonthList = []
-
-<<<<<<< HEAD
             conn = mysql.connect()
             cursor = conn.cursor()
-=======
 
-    # 차트 라벨(X축 담당)
-    labels = [
-        'JAN', 'FEB', 'MAR', 'APR',
-        'MAY', 'JUN', 'JUL', 'AUG',
-        'SEP', 'OCT', 'NOV', 'DEC'
-    ]
->>>>>>> upstream/master
+            search_option = request.args.get('inputYear')
 
-            cursor.callproc('sp_muchUseMoney')
+            if search_option is None:
+                search_option = "2016"
+
+            print(search_option)
+
+            if search_option == "2017":
+                cursor.callproc('sp_search_stat', '0')
+            elif search_option == "2016":
+                cursor.callproc('sp_search_stat', '1')
 
             accountValue = cursor.fetchall()
             accountValuesList = []
 
             # data Extract
-            # if문을 통해 DB 에서 긁어온 account_use_date의 달별로  totalUseMoneyPerMonthList 에 append
-            # 다른 방법을 써야할 것 같다.
 
             for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
+                account_dict = {
+                    'account_use_money': account[3],
+                    'account_use_date': account[4],
                 }
-                accountValuesList.append(accountValuesDic)
+                accountValuesList.append(account_dict)
+            print(accountValue)
 
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201801:
-                    totalUseMoneyPerMonth += account[3]
 
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201802:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201803:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201804:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201805:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201806:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201807:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201808:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201809:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201810:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201811:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            for account in accountValue:
-                accountValuesDic = {
-                    'account_use_money':account[3],
-                    'account_use_date':account[4]
-                }
-                accountValuesList.append(accountValuesDic)
-
-                if int(account[4]/10000) == 2018 and int(account[4]/100) == 201812:
-                    totalUseMoneyPerMonth += account[3]
-
-            totalUseMoneyPerMonthList.append(totalUseMoneyPerMonth)
-            totalUseMoneyPerMonth = 0
-
-            print(totalUseMoneyPerMonthList)
-
-            bar_values = totalUseMoneyPerMonthList
-
-            return render_template('stat.html', values= bar_values,username=session.get('user'))
+            return render_template('stat.html', username=session.get('user'))
         else:
             return render_template('error.html', error="장부통계를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
@@ -424,7 +266,7 @@ def logout():
     return redirect('/')
 
 
-# 에러처리
+# 에러처리,
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html',error="404 페이지를 찾을 수 없습니다")
