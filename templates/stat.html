@@ -45,6 +45,7 @@
           <form class="form-inline" method="GET">
             <div class="input-group">
                     <select class="form-control" name="inputYear">
+                        <option value="2018">2018</option>
                         <option value="2017">2017</option>
                         <option value="2016">2016</option>
                     </select>
@@ -135,11 +136,23 @@
                   datasets :[{
                       borderColor: 'rgba(128,128,128,0.8)',
                       pointBackgroundColor : 'rgba(128,128,128,1)',
-                      label: "수정 수(단위: 횟수)",
+                      label: "사용 수(단위: 횟수)",
                       lineTension : 0,
                       fill : false,
                       data : [
-                          {% for item in Frequency_Values %}
+                          {% for item in Use_Frequency_Values %}
+                              "{{ item }}",
+                          {% endfor %}
+                      ]
+                  },{
+                      borderColor: 'rgba(167,54,152,0.8)',
+                      backgroundColor : 'rgba(167,54,152,0.8)',
+                      pointBackgroundColor : 'rgba(167,54,152,1)',
+                      label: "기록 수(단위 : 횟수)",
+                      lineTension : 0,
+                      fill : false,
+                      data : [
+                          {% for item in Write_Frequency_Values %}
                               "{{ item }}",
                           {% endfor %}
                       ]
