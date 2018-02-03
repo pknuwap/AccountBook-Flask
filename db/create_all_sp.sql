@@ -157,3 +157,12 @@ BEGIN
     select * from tbl_user where user_email = p_email;
 END$$
 DELIMITER ;
+
+# 회비납부
+DELIMITER $$
+CREATE PROCEDURE `sp_duesSearch` (
+)
+BEGIN
+    SELECT * FROM tbl_account where account_use_option=2;
+END$$
+DELIMITER ;

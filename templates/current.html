@@ -17,16 +17,30 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h2 class="">2017년도 회비납부 현황</h2>
+          <h2 class="">{{ showYear }}년도 회비납부 현황</h2>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <p class="">블록체인 기술을 활용한 동아리 전자장부 프로젝트 / 2018 wap winter vacation project / 이태경, 김세훈</p>
+        <form class="form-inline" method="GET">
+            <div class="input-group">
+                    <select class="form-control" name="inputYear">
+                        <option value="{{ currentYear }}">{{ currentYear }}</option>
+                        <option value="{{ currentYear - 1 }}">{{ currentYear - 1 }} </option>
+                        <option value="{{ currentYear - 2 }}">{{ currentYear - 2 }}</option>
+                    </select>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-dark" >보기</button>
+              </div>
+            </div>
+
+          </form>
         </div>
       </div>
     </div>
   </div>
+
   <hr>
   <div class="py-5">
     <div class="container">

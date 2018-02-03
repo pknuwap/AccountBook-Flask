@@ -28,7 +28,34 @@ def home_intro():
 def current():
     try:
         if session.get('user'):
-            return render_template('current.html',userName=session.get('name'))
+
+            con = mysql.connect()
+            cursor = con.cursor()
+
+            current_year = int(datetime.today().strftime("%Y"))
+
+            input_year = request.args.get('inputYear')
+            if input_year is None:
+                input_year = current_year
+
+            cursor.callproc('sp_duesSearch')
+            account_book = cursor.fetchall()
+            print(account_book)
+
+            account_list = []
+            for account in account_book:
+                account_dict = {
+                    'user_name': account[1],
+                    'dues_date': account[3],
+                    'account_use_date': account[4],
+                    'account_write_date': account[5],
+                    'account_write_user': account[6],
+                }
+                account_list.append(account_dict)
+
+
+
+            return render_template('current.html',userName=session.get('name'), currentYear=current_year, showYear=input_year)
         else:
             return render_template('error.html', error="회비납부 현황을 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
@@ -39,6 +66,7 @@ def current():
 def home_main():
     try:
         if session.get('user'):
+            current_date = int(datetime.today().strftime("%Y%d%m"))
 
             con = mysql.connect()
             cursor = con.cursor()
@@ -47,8 +75,6 @@ def home_main():
             sort = request.args.get('sort')
             if sort =="muchmoney":
                 cursor.callproc('sp_muchUseMoney')
-            elif sort == "oldday":
-                cursor.callproc('sp_oldDay')
             elif sort=="lastday":
                 cursor.callproc('sp_lastDay')
             else:
@@ -96,7 +122,7 @@ def home_main():
                                     total=len(account_list), css_framework='bootstrap4',
                                     search=search, per_page=10,alignment="center")
 
-            return render_template('home.html', show_account_list=show_account_list, pagination=pagination,
+            return render_template('home.html', currentDate=current_date, show_account_list=show_account_list, pagination=pagination,
                                    userName=session.get('name'))
         else:
             return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")

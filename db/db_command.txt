@@ -178,8 +178,16 @@ BEGIN
 END$$
 DELIMITER ;
 
+DROP procedure IF EXISTS `accountBook`.`sp_duesSearch`;
 
-
+# 회비납부
+DELIMITER $$
+CREATE PROCEDURE `sp_duesSearch` (
+)
+BEGIN
+    SELECT * FROM tbl_account where account_use_option=2;
+END$$
+DELIMITER ;
 
 #통계 페이지 전용 DB 서치 프로시져
 DELIMITER $$
