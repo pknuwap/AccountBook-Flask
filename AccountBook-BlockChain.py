@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'kk2924140'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'dlxorud7202'
 app.config['MYSQL_DATABASE_DB'] = 'accountBook'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -115,6 +115,7 @@ def addAcount():
             _use_date = request.form['use_date']
             _write_name = session.get('name')
             _write_date = int(datetime.today().strftime("%Y%m%d"))
+            _use_option = int(request.form['use_option']) # 지출 (0), 수입(1), 회비(2)
 
             # 특수문자가 포함되어져 있는가 확인 bug fix
             if (sec.check_password(_use_name, 1) or
@@ -128,7 +129,7 @@ def addAcount():
             conn = mysql.connect()
             cursor = conn.cursor()
 
-            cursor.callproc('sp_addAccount', (_use_name, _use_description, _use_money, _use_date, _write_date, _write_name))
+            cursor.callproc('sp_addAccount', (_use_name, _use_description, _use_money, _use_date, _write_date, _write_name, _use_option))
             data = cursor.fetchall()
 
             if len(data) is 0:
@@ -162,7 +163,7 @@ def validateLogin():
             data = cursor.fetchall()
 
             if len(data) > 0:
-                if(check_password_hash(str(data[0][1]), _password)): # user password compared
+                if check_password_hash(str(data[0][1]), _password): # user password compared
                     session['user'] = data[0][0] # user email
                     session['name'] = data[0][2] # user name
                     return render_template('intro.html', userName=str(data[0][2]))
@@ -268,7 +269,7 @@ def stat():
             lineValue_frequency_use = per_month_use_frequency
             lineValue_frequency_write = per_month_write_frequency
 
-            return render_template('stat.html',values=barValue_spend, Write_Frequency_Values = lineValue_frequency_write, Use_Frequency_Values= lineValue_frequency_use, username=session.get('user'))
+            return render_template('stat.html',values=barValue_spend, Write_Frequency_Values = lineValue_frequency_write, Use_Frequency_Values= lineValue_frequency_use, userName=str(session.get('name')))
         else:
             return render_template('error.html', error="장부통계를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:

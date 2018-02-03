@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
   <style>
         .chart-container{
             max-width: 600px;
@@ -15,8 +14,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   <script src="../static/js/Chart.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="../static/main.css" type="text/css">
-    <title>WAP 전자장부 통계</title>
+  <link rel="stylesheet" href="../static/main.css" type="text/css"><title>WAP 전자장부 통계</title>
 
 </head>
 
@@ -35,10 +33,11 @@
           <p class="">블록체인 기술을 활용한 동아리 전자장부 프로젝트 / 2018 wap winter vacation project / 이태경, 김세훈</p>
         </div>
       </div>
-
     </div>
+  </div>
 
-        <div class="py-5">
+
+  <div class="py-5">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -58,29 +57,22 @@
         </div>
       </div>
     </div>
-
-
-
   </div>
+
   <hr>
 
-
-
   <center>
+  <div class="py-5">
   <div class="chart-container" style="position: relative; height:40vh; width:80vw">
 
-      <center>
-          <h1>WAP 월 별 예산</h1>
-      </center>
+      <h3>예산 현황</h3>
 
       <canvas id="wapMonthBudgetLineChart"></canvas>
-      <center>
-
           <script>
               var ctx = document.getElementById("wapMonthBudgetLineChart").getContext("2d");
 
               var myData = {
-                  labels : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                   datasets :[{
                       borderColor: 'rgba(128,128,128,0.8)',
                       pointBackgroundColor : 'rgba(128,128,128,1)',
@@ -109,34 +101,27 @@
               });
           </script>
 
-      </center>
   </div>
-  </center>
-
-  <br/>
-  <br/>
-  <br/>
-
+  <br><br>
   <hr>
 
-  <center>
+  <br>
   <div class="chart-container" style="position: relative; height:40vh; width:90vw">
-      <center>
-          <h1>WAP 월별 장부 기록 빈도 및 예산 사용 빈도</h1>
-      </center>
+
+          <h3>장부기록/예산사용 현황</h3>
 
       <canvas id="wapMonthWriteFrequencyLineChart"></canvas>
-      <center>
+
 
           <script>
               var ctx = document.getElementById("wapMonthWriteFrequencyLineChart").getContext("2d");
 
               var myData = {
-                  labels : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                   datasets :[{
                       borderColor: 'rgba(128,128,128,0.8)',
                       pointBackgroundColor : 'rgba(128,128,128,1)',
-                      label: "사용 수(단위: 횟수)",
+                      label: "예산사용 횟수(단위: 횟수)",
                       lineTension : 0,
                       fill : false,
                       data : [
@@ -148,7 +133,7 @@
                       borderColor: 'rgba(167,54,152,0.8)',
                       backgroundColor : 'rgba(167,54,152,0.8)',
                       pointBackgroundColor : 'rgba(167,54,152,1)',
-                      label: "기록 수(단위 : 횟수)",
+                      label: "장부기록 횟수(단위 : 횟수)",
                       lineTension : 0,
                       fill : false,
                       data : [
@@ -176,13 +161,10 @@
                   options: chartOptions
               });
           </script>
-      </center>
+
   </div>
-  </center>
 
 
-  <br/>
-  <br/>
   <br/>
   <br/>
 
@@ -190,13 +172,11 @@
 
   <br/>
 
-  <center>
-  <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
-      <center>
-          <h1> WAP 달 별 수입 및 지출 </h1>
-      </center>
 
-      <center>
+  <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
+
+          <h3>수입/지출 현황</h3>
+
           <canvas id="wapMonthIncomeOutcomeBarChart"></canvas>
           <script>
               var chartCanvas = document.getElementById("wapMonthIncomeOutcomeBarChart");
@@ -220,7 +200,7 @@
               };
 
               var totalData = {
-                  labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                  labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
                   datasets: [incomeData, outcomeData]
               };
 
@@ -239,9 +219,22 @@
                   options: chartOptions
               });
           </script>
-      </center>
+
   </div>
-  </center>
+  </div>
+</center>
+
+    <div class="py-5 bg-dark text-white">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 mt-3 text-center">
+              <p>© Copyright 2017 WAP - All rights reserved.
+                <br> </p>
+            </div>
+          </div>
+        </div>
+  </div>
+
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
