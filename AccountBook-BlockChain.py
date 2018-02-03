@@ -269,7 +269,6 @@ def stat():
                     per_month_budget[m] = get_money - use_money
                     m = m+1
 
-                print(per_month_budget)
 
             return render_template('stat.html',
                                    currentYear=current_year,

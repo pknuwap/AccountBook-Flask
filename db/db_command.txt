@@ -178,21 +178,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-DELIMITER $$
-CREATE PROCEDURE `sp_lastDay` (
-)
-BEGIN
-    SELECT * FROM tbl_account ORDER BY account_use_date DESC;
-END$$
-DELIMITER ;
 
-DELIMITER $$
-CREATE PROCEDURE `sp_lastDay` (
-)
-BEGIN
-    SELECT * FROM tbl_account ORDER BY account_use_date DESC;
-END$$
-DELIMITER ;
 
 
 #통계 페이지 전용 DB 서치 프로시져
