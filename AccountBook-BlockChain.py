@@ -3,18 +3,19 @@ from flask_paginate import Pagination
 from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-import sec # 보안 설정
+import sec # 보안/기타 함수모음
 
 mysql = MySQL()
 app = Flask(__name__)
 
-# MySQL configurations
+# MySQL 설정
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'dlxorud7202'
 app.config['MYSQL_DATABASE_DB'] = 'accountBook'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
+# 추후 설정해야함
 app.secret_key = '???'
 
 # 홈화면
@@ -226,50 +227,59 @@ def stat():
 
             conn = mysql.connect()
             cursor = conn.cursor()
+            current_year = int(datetime.today().strftime("%Y"))
 
-            search_option = request.args.get('inputYear')
-
+            input_year = request.args.get('inputYear')
+            if input_year is None:
+                input_year = current_year
+            else:
+                input_year = int(input_year)
             # set value for chart
-            per_month_use_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            per_month_income = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            per_month_use_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 매달 지출
+            per_month_get_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 매달 수입
             per_month_use_frequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            per_month_write_frequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            per_month_budget = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+            per_month_write_frequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 장부작성 빈도
+            per_month_budget = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 매달 남은 예산
+            month_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] # 달
 
-            if search_option is None:
-                search_option = "2018"
+            cursor.callproc('sp_search_stat', (input_year,))
+            stat_list = cursor.fetchall()
 
-            if search_option == "2018":
-                cursor.callproc('sp_search_stat', '0')
-            elif search_option == "2017":
-                cursor.callproc('sp_search_stat', '1')
-            elif search_option == "2016":
-                cursor.callproc('sp_search_stat', '2')
+            for stat_value in stat_list:
 
-            accountValue = cursor.fetchall()
+                account_use_money = int(stat_value[3])
+                account_use_date = int(stat_value[4])
+                account_write_date = int(stat_value[5])
+                account_use_option = int(stat_value[7])
 
-            # data Extract
+                for month in month_list:
+                    # 사용일 기준으로 빈도/사용금액 계산
+                    if sec.check_month(account_use_date, month):
+                        if account_use_option == 0: # 지출
+                            per_month_use_money[month-1] += account_use_money # 달마다 돈을 얼마나 썼는가
+                            per_month_use_frequency[month-1] += 1 # 매달마다 몇번 돈을 썼는가
+                        else: # 수입 (회비 + 수입)
+                            per_month_get_money[month-1] += account_use_money
 
-            for account in accountValue:
-                account_use_money = account[3]
-                account_use_date = account[4]
-                account_write_date = account[5]
+                    # 장부 작성빈도
+                    if sec.check_month(account_write_date, month):
+                        per_month_write_frequency[month-1] += 1 # 매달 장부를 몇번 썼는가
+                m = 0
+                for get_money, use_money in zip(per_month_get_money, per_month_use_money):
+                    per_month_budget[m] = get_money - use_money
+                    m = m+1
 
-                for date in month:
-                    if int(int(account_use_date/100) - (int(search_option) * 100)) == date:
-                        per_month_use_money[date-1] += int(account_use_money)
-                        per_month_use_frequency[date-1] += 1
+                print(per_month_budget)
 
-                    if int(int(account_write_date/100) - (int(search_option) * 100)) == date:
-                        per_month_write_frequency[date-1] += 1
-
-
-            barValue_spend = per_month_use_money
-            lineValue_frequency_use = per_month_use_frequency
-            lineValue_frequency_write = per_month_write_frequency
-
-            return render_template('stat.html',values=barValue_spend, Write_Frequency_Values = lineValue_frequency_write, Use_Frequency_Values= lineValue_frequency_use, userName=str(session.get('name')))
+            return render_template('stat.html',
+                                   currentYear=current_year,
+                                   showYear=input_year,
+                                   budget=per_month_budget,
+                                   getMoneyList = per_month_get_money,
+                                   useMoneyList = per_month_use_money,
+                                   Write_Frequency_Values = per_month_write_frequency,
+                                   Use_Frequency_Values= per_month_use_frequency,
+                                   userName=str(session.get('name')))
         else:
             return render_template('error.html', error="장부통계를 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:

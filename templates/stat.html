@@ -25,7 +25,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h2 class="">2017년도 통계</h2>
+          <h2 class="">{{ showYear }}년도 통계</h2>
         </div>
       </div>
       <div class="row">
@@ -44,9 +44,9 @@
           <form class="form-inline" method="GET">
             <div class="input-group">
                     <select class="form-control" name="inputYear">
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
+                        <option value="{{ currentYear }}">{{ currentYear }}</option>
+                        <option value="{{ currentYear - 1 }}">{{ currentYear - 1 }} </option>
+                        <option value="{{ currentYear - 2 }}">{{ currentYear - 2 }}</option>
                     </select>
               <div class="input-group-append">
                 <button type="submit" class="btn btn-dark" >보기</button>
@@ -65,7 +65,7 @@
   <div class="py-5">
   <div class="chart-container" style="position: relative; height:40vh; width:80vw">
 
-      <h3>예산 현황</h3>
+      <h3>{{ showYear }} 예산 현황</h3>
 
       <canvas id="wapMonthBudgetLineChart"></canvas>
           <script>
@@ -79,7 +79,11 @@
                       label: "남은 예산(단위 : 원)",
                       lineTension : 0,
                       fill : false,
-                      data : [967.67, 1190.89, 1079.75, 1349.19, 2328.91, 2504.28, 2873.83, 4764.87, 4349.29, 6458.30, 9907, 16297]
+                      data : [
+                          {% for item in budget %}
+                              "{{ item }}",
+                          {% endfor %}
+                          ]
                   }]
               };
 
@@ -108,7 +112,7 @@
   <br>
   <div class="chart-container" style="position: relative; height:40vh; width:90vw">
 
-          <h3>장부기록/예산사용 현황</h3>
+          <h3>{{ showYear }} 장부기록/예산사용 현황</h3>
 
       <canvas id="wapMonthWriteFrequencyLineChart"></canvas>
 
@@ -175,7 +179,7 @@
 
   <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
 
-          <h3>수입/지출 현황</h3>
+          <h3>{{ showYear }} 수입/지출 현황</h3>
 
           <canvas id="wapMonthIncomeOutcomeBarChart"></canvas>
           <script>
@@ -183,7 +187,12 @@
 
               var incomeData = {
                   label: '수입(단위 : 원)',
-                  data: [54270, 52430, 55140, 39330, 13260, 6870, 12710, 16380, 48140, 39330, 34270, 42430],
+                  data: [
+                      {% for item in getMoneyList %}
+                          "{{ item }}",
+                      {% endfor %}
+
+                  ],
                   backgroundColor: 'rgba(0,0,255,0.6)',
                   borderWidth: 0
               };
@@ -191,8 +200,8 @@
               var outcomeData = {
                   label: '지출(단위 : 원)',
                   data: [
-                      {% for item in values %}
-                          "{{ item }}",
+                      {% for item2 in useMoneyList %}
+                          "{{ item2 }}",
                       {% endfor %}
                   ],
                   backgroundColor: 'rgba(255,0,0,0.6)',
@@ -223,6 +232,7 @@
   </div>
   </div>
 </center>
+  <br><Br>
 
     <div class="py-5 bg-dark text-white">
         <div class="container">

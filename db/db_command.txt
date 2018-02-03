@@ -194,8 +194,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-select * from tbl_account where account_use_user like '%이태%';
-
 
 #통계 페이지 전용 DB 서치 프로시져
 DELIMITER $$
