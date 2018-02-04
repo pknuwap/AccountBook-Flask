@@ -2,7 +2,7 @@ def check_password(s,k):
     if k==0: # email
         a = "!#$%^&*()'-,/\+=~"
     else: # password
-        a = "!#$%^&*()'-.@,/\+=~"
+        a = "!#$%^&*()'-.@,/\+=~_&₩~"
 
     for i in a:
         for j in s:

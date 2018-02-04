@@ -30,14 +30,15 @@ class BlockChain(object):
         return block
 
     # 새로운 거래(장부작성)
-    def new_transaction(self, use_user, use_description, use_money, use_date, write_date, write_user):
+    def new_transaction(self, use_user, use_description, use_money, use_date, write_date, write_user, use_option):
         self.current_transactions.append({
             'use_user':use_user, # 돈 사용한 사람
             'use_description':use_description, # 돈을 사용한 이유
             'use_money':use_money, # 사용한 돈의 양
             'use_date':use_date, # 돈 사용한 날짜
             'write_date':write_date, # 장부 기록 날짜
-            'write_user': write_user() # 장부 기록자
+            'write_user': write_user, # 장부 기록자
+            'use_option':use_option # 지출/수입/회비 0,1,2
         })
         return self.last_block['index'] + 1 # 마지막 블록 + 1 을 반환
 

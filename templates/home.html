@@ -71,9 +71,11 @@ function checkNumber()
                 <th class="opaque-overlay">사용자</th>
                 <th>사용내역</th>
                 <th>사용금액</th>
+                  <th>사용용도</th>
                 <th>사용일</th>
                   <th>장부작성일</th>
                   <th>장부작성자</th>
+
               </tr>
             </thead>
             <tbody>
@@ -84,6 +86,14 @@ function checkNumber()
                     <td>{{ line.account_use_user }}</td>
                     <td>{{ line.account_use_description }}</td>
                 <td>{{ line.account_use_money }}</td>
+                    {% if line.account_use_option == 0 %}
+                        <td>지출</td>
+                    {% elif line.account_use_option == 1 %}
+                        <td>수입</td>
+                    {% else %}
+                        <td>회비</td>
+                    {% endif %}
+
                 <td>{{ line.account_use_date }}</td>
                 <td>{{ line.account_write_date }}</td>
                 <td>{{ line.account_write_user }}</td>
