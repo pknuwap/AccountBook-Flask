@@ -99,8 +99,15 @@ def home_main():
             else:
                 cursor.callproc('sp_GetAccountBookAll')
 
+            result_text = "최신순으로 10개의 거래내역을 보여줍니다"
+
             search_option = request.args.get('inputSearch')
             search_content = request.args.get('inputSearchContent')
+            if search_content is not None:
+                if sec.check_password(search_content, 1):
+                    result_text = search_content + " 검색결과"
+                else:
+                    return render_template('error.html', error="특수문자를 제외하고 검색해주세요")
 
             if search_option == "account_use_user":
                 cursor.callproc('sp_search', (0, search_content))
@@ -142,7 +149,7 @@ def home_main():
                                     total=len(account_list), css_framework='bootstrap4',
                                     search=search, per_page=10,alignment="center")
 
-            return render_template('home.html', currentDate=current_date, show_account_list=show_account_list, pagination=pagination,
+            return render_template('home.html', resultText=result_text, currentDate=current_date, show_account_list=show_account_list, pagination=pagination,
                                    userName=session.get('name'))
         else:
             return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
