@@ -1,3 +1,5 @@
+# 보안 및 기타 함수를 모아둔 모듈
+
 def check_password(s,k):
     if k==0: # email
         a = "!#$%^&*()'-,/\+=~"

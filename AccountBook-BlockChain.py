@@ -1,20 +1,37 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from flask_paginate import Pagination
+from flask_recaptcha import ReCaptcha
 from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-import sec # 보안/기타 함수모음
-import userObject
-
+import secFunc, userObject, setObject # 보안/기타 함수모음
 
 mysql = MySQL()
 app = Flask(__name__)
 
+# ReCaptcha 설정
+app.config.update(dict(
+    RECAPTCHA_ENABLED = True,
+    RECAPTCHA_SITE_KEY = setObject.recaptcha_site_key,
+    RECAPTCHA_SECRET_KEY = setObject.recaptcha_secret_key
+))
+
+recaptcha = ReCaptcha()
+recaptcha.init_app(app)
+
+
 # MySQL 설정
+<<<<<<< HEAD
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'kk2924140'
 app.config['MYSQL_DATABASE_DB'] = 'accountBook'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+=======
+app.config['MYSQL_DATABASE_USER'] = setObject.db_user
+app.config['MYSQL_DATABASE_PASSWORD'] = setObject.db_password
+app.config['MYSQL_DATABASE_DB'] = setObject.db_name
+app.config['MYSQL_DATABASE_HOST'] = setObject.db_host
+>>>>>>> upstream/master
 mysql.init_app(app)
 
 # 추후 설정해야함
@@ -55,11 +72,11 @@ def current():
 
             # 회비중 입력 년도에 맞는것 선택
             for account in account_book:
-                if sec.check_year(account[4], input_year): # 회비납부한것들중 년도가 맞다면
+                if secFunc.check_year(account[4], input_year): # 회비납부한것들중 년도가 맞다면
                     for member in member_list:
 
                         if member.name == account[1]: # 멤버 이름이 같다면
-                            member.month[int(sec.parse_month(account[4])) - 1] = 1
+                            member.month[int(secFunc.parse_month(account[4])) - 1] = 1
 
             return render_template('current.html',duesList=member_list, userName=session.get('name'), currentYear=current_year, showYear=input_year)
         else:
@@ -86,8 +103,15 @@ def home_main():
             else:
                 cursor.callproc('sp_GetAccountBookAll')
 
+            result_text = "최신순으로 10개의 거래내역을 보여줍니다"
+
             search_option = request.args.get('inputSearch')
             search_content = request.args.get('inputSearchContent')
+            if search_content is not None:
+                if secFunc.check_password(search_content, 1):
+                    result_text = search_content + " 검색결과"
+                else:
+                    return render_template('error.html', error="특수문자를 제외하고 검색해주세요")
 
             if search_option == "account_use_user":
                 cursor.callproc('sp_search', (0, search_content))
@@ -129,7 +153,7 @@ def home_main():
                                     total=len(account_list), css_framework='bootstrap4',
                                     search=search, per_page=10,alignment="center")
 
-            return render_template('home.html', currentDate=current_date, show_account_list=show_account_list, pagination=pagination,
+            return render_template('home.html', resultText=result_text, currentDate=current_date, show_account_list=show_account_list, pagination=pagination,
                                    userName=session.get('name'))
         else:
             return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
@@ -152,9 +176,9 @@ def addAcount():
             _use_option = int(request.form['use_option']) # 지출 (0), 수입(1), 회비(2)
 
             # 특수문자가 포함되어져 있는가 확인 bug fix
-            if (sec.check_password(_use_name, 1) or
-                sec.check_password(_use_money, 1) or
-                sec.check_password(_use_date, 1)) is False:
+            if (secFunc.check_password(_use_name, 1) or
+                secFunc.check_password(_use_money, 1) or
+                secFunc.check_password(_use_date, 1)) is False:
                 return render_template('error.html', error='특수문자 포함 금지')
 
             _use_money = int(_use_money)
@@ -186,9 +210,9 @@ def validateLogin():
             _password = request.form['inputPassword']
 
             # security
-            if sec.check_password(_password, 1) == False or sec.check_password(_email,0) == False:
+            if secFunc.check_password(_password, 1) == False or secFunc.check_password(_email, 0) == False:
                 return render_template('intro.html', loginError='특수문자를 제외해주세요.')
-            if sec.check_null(_email) == False or sec.check_null(_password) == False:
+            if secFunc.check_null(_email) == False or secFunc.check_null(_password) == False:
                 return render_template('intro.html', loginError='이메일과 비밀번호를 입력해주세요.')
 
             conn = mysql.connect()
@@ -221,6 +245,10 @@ def validateLogin():
 def joinIn():
     if request.method == 'POST':
         try:
+
+            if not recaptcha.verify():
+                return render_template('error.html', error="스팸방지 문자를 제대로 입력해주세요.")
+
             _email = request.form['inputEmail']
             _password = request.form['inputPassword'] # 특수문자 허용 x
             _name = request.form['inputName']
@@ -287,7 +315,7 @@ def stat():
 
                 for month in month_list:
                     # 사용일 기준으로 빈도/사용금액 계산
-                    if sec.check_month(account_use_date, month):
+                    if secFunc.check_month(account_use_date, month):
                         if account_use_option == 0: # 지출
                             per_month_use_money[month-1] += account_use_money # 달마다 돈을 얼마나 썼는가
                             per_month_use_frequency[month-1] += 1 # 매달마다 몇번 돈을 썼는가
@@ -295,7 +323,7 @@ def stat():
                             per_month_get_money[month-1] += account_use_money
 
                     # 장부 작성빈도
-                    if sec.check_month(account_write_date, month):
+                    if secFunc.check_month(account_write_date, month):
                         per_month_write_frequency[month-1] += 1 # 매달 장부를 몇번 썼는가
                 m = 0
                 for get_money, use_money in zip(per_month_get_money, per_month_use_money):
