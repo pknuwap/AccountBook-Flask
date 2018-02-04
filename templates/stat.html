@@ -21,8 +21,8 @@
 <body>
   {% include 'include/navbar.html' %}
 
-  <div class="py-5">
-    <div class="container">
+
+    <div class="py-5 container">
       <div class="row">
         <div class="col-md-12">
           <h2 class="">{{ showYear }}년도 통계</h2>
@@ -47,8 +47,6 @@
         </div>
       </div>
     </div>
-  </div>
-
 
 
   <hr>
@@ -57,7 +55,7 @@
   <div class="py-5">
   <div class="chart-container" style="position: relative; height:40vh; width:80vw">
 
-      <h3>{{ showYear }} 예산 현황</h3>
+      <h3>{{ showYear }} 남은 예산 현황</h3>
 
       <canvas id="wapMonthBudgetLineChart"></canvas>
           <script>
@@ -98,10 +96,11 @@
           </script>
 
   </div>
-  <br><br>
+  </div>
+
   <hr>
 
-  <br>
+  <div class="py-5">
   <div class="chart-container" style="position: relative; height:40vh; width:90vw">
 
           <h3>{{ showYear }} 장부기록/예산사용 현황</h3>
@@ -159,16 +158,13 @@
           </script>
 
   </div>
+  </div>
 
 
-  <br/>
-  <br/>
 
   <hr>
 
-  <br/>
-
-
+  <div class="py-5">
   <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
 
           <h3>{{ showYear }} 수입/지출 현황</h3>
@@ -223,8 +219,9 @@
 
   </div>
   </div>
+
 </center>
-  <br><Br>
+
 
     <div class="py-5 bg-dark text-white">
         <div class="container">

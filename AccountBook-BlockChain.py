@@ -111,6 +111,7 @@ def home_main():
                     'account_use_date': account[4],
                     'account_write_date': account[5],
                     'account_write_user': account[6],
+                    'account_use_option': account[7]
                 }
                 account_list.append(account_dict)
 

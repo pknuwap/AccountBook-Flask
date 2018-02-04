@@ -16,4 +16,4 @@
 - MYSQL
 - Python Flask
 - Bootstrap
-- Nerual Network(추후 적용)
+- AWS EC2
