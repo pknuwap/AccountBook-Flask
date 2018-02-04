@@ -52,15 +52,16 @@ def current():
             cursor.callproc('sp_duesSearch')
             account_book = cursor.fetchall()
 
+
             # 회비중 입력 년도에 맞는것 선택
             for account in account_book:
                 if sec.check_year(account[4], input_year): # 회비납부한것들중 년도가 맞다면
                     for member in member_list:
-                        print(member.name, account[1])
+
                         if member.name == account[1]: # 멤버 이름이 같다면
                             member.month[int(sec.parse_month(account[4])) - 1] = 1
 
-            return render_template('current.html',userName=session.get('name'), currentYear=current_year, showYear=input_year)
+            return render_template('current.html',duesList=member_list, userName=session.get('name'), currentYear=current_year, showYear=input_year)
         else:
             return render_template('error.html', error="회비납부 현황을 볼 권한이 없습니다. 로그인 해주세요")
     except Exception as e:
