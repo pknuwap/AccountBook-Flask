@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 # MySQL 설정
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlxorud7202'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'kk2924140'
 app.config['MYSQL_DATABASE_DB'] = 'accountBook'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -299,9 +299,12 @@ def stat():
                         per_month_write_frequency[month-1] += 1 # 매달 장부를 몇번 썼는가
                 m = 0
                 for get_money, use_money in zip(per_month_get_money, per_month_use_money):
-                    per_month_budget[m] = get_money - use_money
-                    m = m+1
-
+                    if m == 0:
+                        per_month_budget[m] = get_money - use_money
+                        m = m + 1
+                    else:
+                        per_month_budget[m] = per_month_budget[m - 1] + (get_money - use_money)
+                        m = m + 1
 
             return render_template('stat.html',
                                    currentYear=current_year,
