@@ -13,16 +13,18 @@
 - python version : 3.6
 - 개발 완료 후 패키지화 시켜 배포 예정
 
-#### 소스코드 다운로드
+#### 1. 소스코드 다운로드
 `git clone https://github.com/etilelab/AccountBook-BlockChain.git`
 #### 필요 라이브러리 다운로드
 - 추후 제공할 예정
 
-#### SQL파일 실행
-`source ~/create_db.sql`
-`source ~/create_table.sql`
-`source ~/create_all_sp.sql.sql`
-#### setObject.py 설정
+#### 2. SQL파일 실행
+```
+mysql: source ~/create_db.sql
+mysql: source ~/create_table.sql
+mysql: source ~/create_all_sp.sql.sql
+```
+#### 3. setObject.py 설정
 기본적인 설정을 해준다.
 ```
 db_user = "root"
