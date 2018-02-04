@@ -15,8 +15,7 @@
 
 #### 1. 소스코드 다운로드
 `git clone https://github.com/etilelab/AccountBook-BlockChain.git`
-#### 필요 라이브러리 다운로드
-- 추후 제공할 예정
+- 필요 라이브러리 다운로드(추후 제공)
 
 #### 2. SQL파일 실행
 ```
