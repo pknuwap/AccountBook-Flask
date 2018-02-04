@@ -46,7 +46,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <table class="table table-striped">
+          <table class="table table-hover">
             <thead>
               <tr>
                 <th>멤버명</th>
@@ -67,25 +67,27 @@
             </thead>
             <tbody>
 
-              <tr>
-                <td>Mark</td>
-                <td>준회원</td>
+                  {% for duesObject in duesList %}
+                      <tr>
+                      <td>{{ duesObject.name }}</td>
 
-                <td>2/12</td>
-                <td>3/22</td>
-                <td>4/2</td>
-                <td>4/2</td>
-                <td>5/8</td>
-                <td>미납</td>
-                <td>미납</td>
-                <td>미납</td>
-                <td>미납</td>
-                <td>미납</td>
-                <td>미납</td>
-                <td>미납</td>
+                      {% if duesObject.grade == 0 %}
+                        <td>준회원</td>
+                      {% else %}
+                        <td>관리자</td>
+                      {%  endif %}
 
+                      {% for i in range(0,12) %}
+                          {% if duesObject.month[i] == 1 %}
+                            <td class="table-success">납입</td>
+                          {% else %}
+                            <td class="table-warning">미납</td>
+                          {% endif %}
+                      {% endfor %}
+                      </tr>
 
-              </tr>
+                  {% endfor %}
+
 
             </tbody>
           </table>
