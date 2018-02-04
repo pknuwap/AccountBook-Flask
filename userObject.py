@@ -6,6 +6,3 @@ class User:
         self.grade = grade
         self.month = [0,0,0,0,0,0,0,0,0,0,0,0]
 
-    def add_month(self, m):
-        self.month[m] = 1
-

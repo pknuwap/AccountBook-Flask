@@ -28,7 +28,6 @@ def check_month(date,input_month):
 def check_year(date, input_year):
     date = str(date)
     year = date[0:4]
-    print(year)
     if str(input_year) == str(year):
         return True
     return False
