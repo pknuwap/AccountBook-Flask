@@ -4,7 +4,7 @@ from flask_recaptcha import ReCaptcha
 from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-import sec, userObject, setObject # 보안/기타 함수모음
+import secFunc, userObject, setObject # 보안/기타 함수모음
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -65,11 +65,11 @@ def current():
 
             # 회비중 입력 년도에 맞는것 선택
             for account in account_book:
-                if sec.check_year(account[4], input_year): # 회비납부한것들중 년도가 맞다면
+                if secFunc.check_year(account[4], input_year): # 회비납부한것들중 년도가 맞다면
                     for member in member_list:
 
                         if member.name == account[1]: # 멤버 이름이 같다면
-                            member.month[int(sec.parse_month(account[4])) - 1] = 1
+                            member.month[int(secFunc.parse_month(account[4])) - 1] = 1
 
             return render_template('current.html',duesList=member_list, userName=session.get('name'), currentYear=current_year, showYear=input_year)
         else:
@@ -101,7 +101,7 @@ def home_main():
             search_option = request.args.get('inputSearch')
             search_content = request.args.get('inputSearchContent')
             if search_content is not None:
-                if sec.check_password(search_content, 1):
+                if secFunc.check_password(search_content, 1):
                     result_text = search_content + " 검색결과"
                 else:
                     return render_template('error.html', error="특수문자를 제외하고 검색해주세요")
@@ -169,9 +169,9 @@ def addAcount():
             _use_option = int(request.form['use_option']) # 지출 (0), 수입(1), 회비(2)
 
             # 특수문자가 포함되어져 있는가 확인 bug fix
-            if (sec.check_password(_use_name, 1) or
-                sec.check_password(_use_money, 1) or
-                sec.check_password(_use_date, 1)) is False:
+            if (secFunc.check_password(_use_name, 1) or
+                secFunc.check_password(_use_money, 1) or
+                secFunc.check_password(_use_date, 1)) is False:
                 return render_template('error.html', error='특수문자 포함 금지')
 
             _use_money = int(_use_money)
@@ -203,9 +203,9 @@ def validateLogin():
             _password = request.form['inputPassword']
 
             # security
-            if sec.check_password(_password, 1) == False or sec.check_password(_email,0) == False:
+            if secFunc.check_password(_password, 1) == False or secFunc.check_password(_email, 0) == False:
                 return render_template('intro.html', loginError='특수문자를 제외해주세요.')
-            if sec.check_null(_email) == False or sec.check_null(_password) == False:
+            if secFunc.check_null(_email) == False or secFunc.check_null(_password) == False:
                 return render_template('intro.html', loginError='이메일과 비밀번호를 입력해주세요.')
 
             conn = mysql.connect()
@@ -308,7 +308,7 @@ def stat():
 
                 for month in month_list:
                     # 사용일 기준으로 빈도/사용금액 계산
-                    if sec.check_month(account_use_date, month):
+                    if secFunc.check_month(account_use_date, month):
                         if account_use_option == 0: # 지출
                             per_month_use_money[month-1] += account_use_money # 달마다 돈을 얼마나 썼는가
                             per_month_use_frequency[month-1] += 1 # 매달마다 몇번 돈을 썼는가
@@ -316,7 +316,7 @@ def stat():
                             per_month_get_money[month-1] += account_use_money
 
                     # 장부 작성빈도
-                    if sec.check_month(account_write_date, month):
+                    if secFunc.check_month(account_write_date, month):
                         per_month_write_frequency[month-1] += 1 # 매달 장부를 몇번 썼는가
                 m = 0
                 for get_money, use_money in zip(per_month_get_money, per_month_use_money):
