@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from flask_paginate import Pagination
+from flask_recaptcha import ReCaptcha
 from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,6 +10,18 @@ import userObject
 
 mysql = MySQL()
 app = Flask(__name__)
+
+
+# ReCaptcha 설정
+app.config.update(dict(
+    RECAPTCHA_ENABLED = True,
+    RECAPTCHA_SITE_KEY = "6Le1NkQUAAAAAF8t5r_NTWIKwRoQD8csNVv51DL6",
+    RECAPTCHA_SECRET_KEY = "6Le1NkQUAAAAAGxYSBQXV89FzSh1RWmqtEsBwz3n",
+))
+
+recaptcha = ReCaptcha()
+recaptcha.init_app(app)
+
 
 # MySQL 설정
 app.config['MYSQL_DATABASE_USER'] = 'root'
@@ -221,6 +234,10 @@ def validateLogin():
 def joinIn():
     if request.method == 'POST':
         try:
+
+            if not recaptcha.verify():
+                return render_template('error.html', error="스팸방지 문자를 제대로 입력해주세요.")
+
             _email = request.form['inputEmail']
             _password = request.form['inputPassword'] # 특수문자 허용 x
             _name = request.form['inputName']
