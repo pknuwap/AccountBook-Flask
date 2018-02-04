@@ -4,19 +4,16 @@ from flask_recaptcha import ReCaptcha
 from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-import sec # 보안/기타 함수모음
-import userObject
-
+import sec, userObject, setObject # 보안/기타 함수모음
 
 mysql = MySQL()
 app = Flask(__name__)
 
-
 # ReCaptcha 설정
 app.config.update(dict(
     RECAPTCHA_ENABLED = True,
-    RECAPTCHA_SITE_KEY = "6Le1NkQUAAAAAF8t5r_NTWIKwRoQD8csNVv51DL6",
-    RECAPTCHA_SECRET_KEY = "6Le1NkQUAAAAAGxYSBQXV89FzSh1RWmqtEsBwz3n",
+    RECAPTCHA_SITE_KEY = setObject.recaptcha_site_key,
+    RECAPTCHA_SECRET_KEY = setObject.recaptcha_secret_key
 ))
 
 recaptcha = ReCaptcha()
@@ -24,10 +21,10 @@ recaptcha.init_app(app)
 
 
 # MySQL 설정
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'dlxorud7202'
-app.config['MYSQL_DATABASE_DB'] = 'accountBook'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_USER'] = setObject.db_user
+app.config['MYSQL_DATABASE_PASSWORD'] = setObject.db_password
+app.config['MYSQL_DATABASE_DB'] = setObject.db_name
+app.config['MYSQL_DATABASE_HOST'] = setObject.db_host
 mysql.init_app(app)
 
 # 추후 설정해야함
