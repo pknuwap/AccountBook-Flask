@@ -200,6 +200,16 @@ BEGIN
 END$$
 DELIMITER ;
 
+# 모든 회원 리스트 가져오기 함수
+DELIMITER $$
+CREATE PROCEDURE `sp_getUser`(
+)
+BEGIN
+    select user_name,user_grade from tbl_user;
+END$$
+DELIMITER ;
+
+
 
 # 장부추가 함수 생성
 DELIMITER $$

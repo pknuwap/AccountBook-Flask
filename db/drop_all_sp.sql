@@ -6,3 +6,5 @@ DROP procedure IF EXISTS `accountBook`.`sp_lastDay`;
 DROP procedure IF EXISTS `accountBook`.`sp_search_stat`;
 DROP procedure IF EXISTS `accountBook`.`sp_search`;
 DROP procedure IF EXISTS `accountBook`.`sp_createUser`;
+DROP procedure IF EXISTS `accountBook`.`sp_getUser`;
+DROP procedure IF EXISTS `accountBook`.`sp_duesSearch`;

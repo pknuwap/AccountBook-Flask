@@ -4,6 +4,8 @@ from datetime import datetime
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 import sec # 보안/기타 함수모음
+import userObject
+
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -32,28 +34,31 @@ def current():
             con = mysql.connect()
             cursor = con.cursor()
 
-            current_year = int(datetime.today().strftime("%Y"))
+            # 모든 멤버의 이름,등급 가져오기
+            cursor.callproc('sp_getUser')
+            user_list = cursor.fetchall()
 
+            member_list = []
+            for u in user_list:
+                member_list.append(userObject.User(u[0],u[1])) # 하나의 멤버 = 하나의 객체로 만들어 리스트에 추가
+
+            # 회비납부 기준이 되는 년 설정
+            current_year = int(datetime.today().strftime("%Y"))
             input_year = request.args.get('inputYear')
             if input_year is None:
                 input_year = current_year
 
+            # 회비 작성한것만 검색
             cursor.callproc('sp_duesSearch')
             account_book = cursor.fetchall()
-            print(account_book)
 
-            account_list = []
+            # 회비중 입력 년도에 맞는것 선택
             for account in account_book:
-                account_dict = {
-                    'user_name': account[1],
-                    'dues_date': account[3],
-                    'account_use_date': account[4],
-                    'account_write_date': account[5],
-                    'account_write_user': account[6],
-                }
-                account_list.append(account_dict)
-
-
+                if sec.check_year(account[4], input_year): # 회비납부한것들중 년도가 맞다면
+                    for member in member_list:
+                        print(member.name, account[1])
+                        if member.name == account[1]: # 멤버 이름이 같다면
+                            member.month[int(sec.parse_month(account[4])) - 1] = 1
 
             return render_template('current.html',userName=session.get('name'), currentYear=current_year, showYear=input_year)
         else:

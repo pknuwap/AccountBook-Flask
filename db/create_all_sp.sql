@@ -166,3 +166,12 @@ BEGIN
     SELECT * FROM tbl_account where account_use_option=2;
 END$$
 DELIMITER ;
+
+# 유저/등급 가져오기
+DELIMITER $$
+CREATE PROCEDURE `sp_getUser`(
+)
+BEGIN
+    select user_name,user_grade from tbl_user;
+END$$
+DELIMITER ;
