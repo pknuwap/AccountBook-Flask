@@ -27,6 +27,7 @@ app.config['MYSQL_DATABASE_USER'] = setObject.db_user
 app.config['MYSQL_DATABASE_PASSWORD'] = setObject.db_password
 app.config['MYSQL_DATABASE_DB'] = setObject.db_name
 app.config['MYSQL_DATABASE_HOST'] = setObject.db_host
+
 mysql.init_app(app)
 
 # 추후 설정해야함
