@@ -1,15 +1,17 @@
 from flask import Flask, render_template, jsonify, request, redirect, session, url_for
 from flask_paginate import Pagination
-from flask_recaptcha import ReCaptcha
 from datetime import datetime
 from flaskext.mysql import MySQL
+from flask_recaptcha import ReCaptcha
 from werkzeug.security import generate_password_hash, check_password_hash
-import secFunc, userObject, setObject # 보안/기타 함수모음
+import secFunc # 보안/기타 함수모음
+import userObject, setObject
+
 
 mysql = MySQL()
 app = Flask(__name__)
 
-# ReCaptcha 설정
+# reCaptcha 설정
 app.config.update(dict(
     RECAPTCHA_ENABLED = True,
     RECAPTCHA_SITE_KEY = setObject.recaptcha_site_key,
@@ -21,17 +23,10 @@ recaptcha.init_app(app)
 
 
 # MySQL 설정
-<<<<<<< HEAD
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'kk2924140'
-app.config['MYSQL_DATABASE_DB'] = 'accountBook'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-=======
 app.config['MYSQL_DATABASE_USER'] = setObject.db_user
 app.config['MYSQL_DATABASE_PASSWORD'] = setObject.db_password
 app.config['MYSQL_DATABASE_DB'] = setObject.db_name
 app.config['MYSQL_DATABASE_HOST'] = setObject.db_host
->>>>>>> upstream/master
 mysql.init_app(app)
 
 # 추후 설정해야함
@@ -103,15 +98,8 @@ def home_main():
             else:
                 cursor.callproc('sp_GetAccountBookAll')
 
-            result_text = "최신순으로 10개의 거래내역을 보여줍니다"
-
             search_option = request.args.get('inputSearch')
             search_content = request.args.get('inputSearchContent')
-            if search_content is not None:
-                if secFunc.check_password(search_content, 1):
-                    result_text = search_content + " 검색결과"
-                else:
-                    return render_template('error.html', error="특수문자를 제외하고 검색해주세요")
 
             if search_option == "account_use_user":
                 cursor.callproc('sp_search', (0, search_content))
@@ -153,7 +141,7 @@ def home_main():
                                     total=len(account_list), css_framework='bootstrap4',
                                     search=search, per_page=10,alignment="center")
 
-            return render_template('home.html', resultText=result_text, currentDate=current_date, show_account_list=show_account_list, pagination=pagination,
+            return render_template('home.html', currentDate=current_date, show_account_list=show_account_list, pagination=pagination,
                                    userName=session.get('name'))
         else:
             return render_template('error.html', error="장부를 볼 권한이 없습니다. 로그인 해주세요")
@@ -210,9 +198,9 @@ def validateLogin():
             _password = request.form['inputPassword']
 
             # security
-            if secFunc.check_password(_password, 1) == False or secFunc.check_password(_email, 0) == False:
+            if secFunc.check_password(_password, 1) == False or sec.check_password(_email,0) == False:
                 return render_template('intro.html', loginError='특수문자를 제외해주세요.')
-            if secFunc.check_null(_email) == False or secFunc.check_null(_password) == False:
+            if secFunc.check_null(_email) == False or sec.check_null(_password) == False:
                 return render_template('intro.html', loginError='이메일과 비밀번호를 입력해주세요.')
 
             conn = mysql.connect()
@@ -245,10 +233,6 @@ def validateLogin():
 def joinIn():
     if request.method == 'POST':
         try:
-
-            if not recaptcha.verify():
-                return render_template('error.html', error="스팸방지 문자를 제대로 입력해주세요.")
-
             _email = request.form['inputEmail']
             _password = request.form['inputPassword'] # 특수문자 허용 x
             _name = request.form['inputName']
@@ -298,6 +282,8 @@ def stat():
             # set value for chart
             per_month_use_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 매달 지출
             per_month_get_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 매달 수입
+            per_month_use_big_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 거액 지출
+            per_month_get_big_money = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 거액 수입
             per_month_use_frequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             per_month_write_frequency = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 장부작성 빈도
             per_month_budget = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # 매달 남은 예산
@@ -317,14 +303,22 @@ def stat():
                     # 사용일 기준으로 빈도/사용금액 계산
                     if secFunc.check_month(account_use_date, month):
                         if account_use_option == 0: # 지출
-                            per_month_use_money[month-1] += account_use_money # 달마다 돈을 얼마나 썼는가
+                            if account_use_money >= 300000:
+                                per_month_use_big_money[month-1] += account_use_money # 거액 거래
+                            else:
+                                per_month_use_money[month-1] += account_use_money # 달마다 돈을 얼마나 썼는가(소액)
+
                             per_month_use_frequency[month-1] += 1 # 매달마다 몇번 돈을 썼는가
                         else: # 수입 (회비 + 수입)
-                            per_month_get_money[month-1] += account_use_money
+                            if account_use_money >= 300000:
+                                per_month_get_big_money[month-1] += account_use_money
+                            else:
+                                per_month_get_money[month-1] += account_use_money
 
                     # 장부 작성빈도
                     if secFunc.check_month(account_write_date, month):
                         per_month_write_frequency[month-1] += 1 # 매달 장부를 몇번 썼는가
+
                 m = 0
                 for get_money, use_money in zip(per_month_get_money, per_month_use_money):
                     if m == 0:
@@ -334,12 +328,30 @@ def stat():
                         per_month_budget[m] = per_month_budget[m - 1] + (get_money - use_money)
                         m = m + 1
 
+                k = 0
+                for get_money, use_money in zip(per_month_get_big_money, per_month_use_big_money):
+                    if k == 0:
+                        if per_month_get_big_money[k] == 0 and per_month_use_big_money[k] == 0:
+                            k = k + 1
+                        else:
+                            per_month_budget[k] += get_money - use_money
+                            k = k + 1
+                    else:
+                        if per_month_get_big_money[k] == 0 and per_month_use_big_money[k] == 0:
+                            per_month_budget[k] = per_month_budget[k - 1]
+                            k = k + 1
+                        else:
+                            per_month_budget[k] += per_month_budget[k - 1] + (get_money - use_money)
+                            k = k + 1
+
             return render_template('stat.html',
                                    currentYear=current_year,
                                    showYear=input_year,
                                    budget=per_month_budget,
                                    getMoneyList = per_month_get_money,
                                    useMoneyList = per_month_use_money,
+                                   getBigMoneyList = per_month_get_big_money,
+                                   useBigMoneyList = per_month_use_big_money,
                                    Write_Frequency_Values = per_month_write_frequency,
                                    Use_Frequency_Values= per_month_use_frequency,
                                    userName=str(session.get('name')))

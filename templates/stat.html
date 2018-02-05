@@ -53,7 +53,7 @@
 
   <center>
   <div class="py-5">
-  <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+  <div class="chart-container" style="position: relative; height:40vh; width:100vw">
 
       <h3>{{ showYear }} 남은 예산 현황</h3>
 
@@ -167,7 +167,7 @@
   <div class="py-5">
   <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
 
-          <h3>{{ showYear }} 수입/지출 현황</h3>
+          <h3>{{ showYear }} 수입/지출 현황(30만원 이하의 소액 거래)</h3>
 
           <canvas id="wapMonthIncomeOutcomeBarChart"></canvas>
           <script>
@@ -221,6 +221,69 @@
   </div>
 
 </center>
+
+  <hr>
+
+  <center>
+  <div class="py-5">
+  <div class="chart-container" style="position: relative; width: 90vw; height: 40vh">
+
+          <h3>{{ showYear }} 수입/지출 현황(30만원 이상의 거액 거래)</h3>
+
+          <canvas id="wapMonthBigIncomeOutcomeBarChart"></canvas>
+          <script>
+              var chartCanvas = document.getElementById("wapMonthBigIncomeOutcomeBarChart");
+
+              var incomeData_Big = {
+                  label: '수입(단위 : 원)',
+                  data: [
+                      {% for item in getBigMoneyList %}
+                          "{{ item }}",
+                      {% endfor %}
+
+                  ],
+                  backgroundColor: 'rgba(0,0,255,0.6)',
+                  borderWidth: 0
+              };
+
+              var outcomeData_Big = {
+                  label: '지출(단위 : 원)',
+                  data: [
+                      {% for item2 in useBigMoneyList %}
+                          "{{ item2 }}",
+                      {% endfor %}
+                  ],
+                  backgroundColor: 'rgba(255,0,0,0.6)',
+                  borderWidth: 0
+              };
+
+              var totalData = {
+                  labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                  datasets: [incomeData_Big, outcomeData_Big]
+              };
+
+              var chartOptions = {
+                  scales: {
+                      xAxes: [{
+                          barPercentage: 1,
+                          categoryPercentage: 0.6
+                      }]
+                  }
+              };
+
+              var barChart = new Chart(chartCanvas, {
+                  type: 'bar',
+                  data: totalData,
+                  options: chartOptions
+              });
+          </script>
+
+  </div>
+  </div>
+
+</center>
+
+
 
 
     <div class="py-5 bg-dark text-white">
