@@ -23,7 +23,8 @@ def mine():
         recipient = node_identifier,
         des= str(datetime.today().month) + " block",
         use_money_time=datetime.today().month,
-        amount = 1
+        amount = 1,use_option=1
+
     )
 
     previous_hash = blockchain.hash(last_block)

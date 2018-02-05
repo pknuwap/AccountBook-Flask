@@ -21,17 +21,11 @@ recaptcha.init_app(app)
 
 
 # MySQL 설정
-<<<<<<< HEAD
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'kk2924140'
-app.config['MYSQL_DATABASE_DB'] = 'accountBook'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-=======
 app.config['MYSQL_DATABASE_USER'] = setObject.db_user
 app.config['MYSQL_DATABASE_PASSWORD'] = setObject.db_password
 app.config['MYSQL_DATABASE_DB'] = setObject.db_name
 app.config['MYSQL_DATABASE_HOST'] = setObject.db_host
->>>>>>> upstream/master
+
 mysql.init_app(app)
 
 # 추후 설정해야함
