@@ -313,10 +313,16 @@ def stat():
                     # 사용일 기준으로 빈도/사용금액 계산
                     if secFunc.check_month(account_use_date, month):
                         if account_use_option == 0: # 지출
-                            per_month_use_money[month-1] += account_use_money # 달마다 돈을 얼마나 썼는가
-                            per_month_use_frequency[month-1] += 1 # 매달마다 몇번 돈을 썼는가
+                            if account_use_money >= 300000:
+                                per_month_use_big_money[month-1] += account_use_money # 거액 거래
+                            else:
+                                per_month_use_money[month - 1] += account_use_money  # 달마다 돈을 얼마나 썼는가
+                                per_month_use_frequency[month - 1] += 1  # 매달마다 몇번 돈을 썼는가
                         else: # 수입 (회비 + 수입)
-                            per_month_get_money[month-1] += account_use_money
+                            if account_use_money >= 300000:
+                                per_month_get_big_money[month-1] += account_use_money # 거액 거래
+                            else:
+                                per_month_get_money[month-1] += account_use_money
 
                     # 장부 작성빈도
                     if secFunc.check_month(account_write_date, month):
