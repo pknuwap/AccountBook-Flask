@@ -20,12 +20,12 @@ class BlockChain(object):
         block = {
             'index':len(self.chain) + 1,
             'month':month, # 몇월달 장부인지
-            'timestamp':time(),
+            'timestamp':time(), # 언제 블록이 생성되었는가
             'transactions':self.current_transactions, # 거래내역들
             'proof':proof,
-            'previous_hash':previous_hash or self.hash(self.chain[-1])
+            'previous_hash':previous_hash or self.hash(self.chain[-1]) # 이전의 해쉬값
         }
-        self.current_transactions = []
+        self.current_transactions = [] # 현재 거래내역은 없음
         self.chain.append(block) # 체인에 블록 추가하기
         return block
 
@@ -37,7 +37,7 @@ class BlockChain(object):
             'use_money':use_money, # 사용한 돈의 양
             'use_date':use_date, # 돈 사용한 날짜
             'write_date':write_date, # 장부 기록 날짜
-            'write_user': write_user, # 장부 기록자
+            'write_user': write_user, # 장부를 기록한 사람
             'use_option':use_option # 지출/수입/회비 0,1,2
         })
         return self.last_block['index'] + 1 # 마지막 블록 + 1 을 반환
@@ -62,7 +62,6 @@ class BlockChain(object):
         parsed_url = urlparse(address) # address를 urlparse로 전환
         self.nodes.add(parsed_url.netloc) # 노드들에 추가
 
-
     # 체인의 유효성 검사, 올바른 블록(매달 장부)인가 체크
     def valid_chain(self, chain):
 
@@ -78,6 +77,7 @@ class BlockChain(object):
 
             # check that he hash of the block is correct
             # 블록이 올바른 블록인가 체크
+            # 현재 블럭이 가르치는 이전블럭의 hash값과 이전블럭의 hash값이 일치하는지 여부 확인
             if block['previous_hash'] != self.hash(last_block):
                 return False
 

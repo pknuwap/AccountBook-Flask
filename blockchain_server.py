@@ -13,21 +13,23 @@ blockchain = BlockChain() # object create
 # 새로운 블록 생성, 매달 생성해줘야함!
 @app.route('/mine', methods=['GET'])
 def mine():
-    month = datetime.today().month
-    last_block = blockchain.last_block
+
+    month = datetime.today().month # 현재 달
+    last_block = blockchain.last_block # 맨 마지막 블럭
     last_proof = last_block['proof']
     proof = blockchain.proof_of_work(last_proof)
 
-    blockchain.new_transaction(
-        sender = '0',
-        recipient = node_identifier,
-        des= str(datetime.today().month) + " block",
-        use_money_time=datetime.today().month,
-        amount = 1,use_option=1
-
-    )
+    # blockchain.new_transaction(
+    #     sender = '0',
+    #     recipient = node_identifier,
+    #     des= str(datetime.today().month) + " block",
+    #     use_money_time=datetime.today().month,
+    #     amount = 1,use_option=1
+    # )
 
     previous_hash = blockchain.hash(last_block)
+
+    # 새로운 블럭 생성
     block = blockchain.new_block(proof, month, previous_hash)
 
     response = {
@@ -58,6 +60,8 @@ def new_transaction():
     return jsonify(response), 201
 
 
+# 체인정보 보기
+
 @app.route("/chain", methods=['GET'])
 def full_chain():
     response = {
@@ -65,7 +69,6 @@ def full_chain():
         'length':len(blockchain.chain)
     }
     return jsonify(response), 200
-
 
 
 # 새로운 노드(사용자) 추가

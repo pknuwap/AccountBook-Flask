@@ -1,6 +1,7 @@
 ## AccountBook-BlockChain
 - WAP 2018년도 겨울방학 프로젝트
 - 블록체인 기술을 활용한 장부 시스템
+- 파이썬 플라스크/MYSQL 등을 이용한 웹 장부시스템
 
 ## 개발목표
 - 블록체인을 활용한 장부시스템의 구현
@@ -8,7 +9,7 @@
 - 기본적인 알고리즘과 실력 향샹을 목표
 
 
-## 웹 전자장부 사용법
+## 웹 전자장부 사용법 (web_server.py)
 - mysql version : 5.6
 - python version : 3.6
 - 개발 완료 후 패키지화 시켜 배포 예정
@@ -34,6 +35,8 @@ db_name = "accountBook"
 recaptcha_site_key ="google recaptcha site key"
 recaptcha_secret_key = "google recaptcha secret key"
 ```
+
+## 블록체인 전자장부 사용법 (blockchain_server.py)
 
 ## 프로젝트 일정
 트렐로 사용
