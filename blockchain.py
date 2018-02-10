@@ -29,6 +29,7 @@ class BlockChain(object):
         self.chain.append(block) # 체인에 블록 추가하기
         return block
 
+
     # 새로운 거래(장부작성)
     def new_transaction(self, use_user, use_description, use_money, use_date, write_date, write_user, use_option):
         self.current_transactions.append({

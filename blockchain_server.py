@@ -3,8 +3,21 @@ from flask import Flask, render_template, jsonify, request, redirect
 from uuid import uuid4
 from blockchain import BlockChain
 from datetime import datetime
+import setObject
+from flask_recaptcha import ReCaptcha
+import os
 
 app = Flask(__name__)
+# ReCaptcha 설정
+app.config.update(dict(
+    RECAPTCHA_ENABLED = True,
+    RECAPTCHA_SITE_KEY = setObject.recaptcha_site_key,
+    RECAPTCHA_SECRET_KEY = setObject.recaptcha_secret_key
+))
+
+recaptcha = ReCaptcha()
+recaptcha.init_app(app)
+
 
 node_identifier = str(uuid4()).replace('-', '')
 
@@ -42,18 +55,29 @@ def mine():
     return jsonify(response), 200
 
 
+# 새로운 거래내역 추가 창
+@app.route('/transactions/make', methods=['GET'])
+def make_transactions():
+    return render_template('block_make_transaction.html')
+
+
 # make new transaction
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
 
-    values = request.get_json()
+    # values = request.get_json()
+    values = request.form
 
-    required = ['sender','recipient','des','amount', 'use_money_time']
+    required = ['use_name','use_option','use_money','use_date', 'use_d']
+    write_date = int(datetime.today().strftime("%Y%m%d")) # 장부작성일
+    write_user = os.uname()[1] # 장부를 작성한자의 컴퓨터 이름
 
+    # POST 값이 제대로 다 주어졌는가 확인
     if not all(k in values for k in required):
         return "Missing values", 400
 
-    index = blockchain.new_transaction(values['sender'], values['recipient'],values['des'],values['amount'],values['use_money_time'])
+    index = blockchain.new_transaction(values['use_name'], values['use_d'], values['use_money'],
+                                       values['use_date'],write_date, write_user, values['use_option'])
 
     response = {'message': 'Transaction will be added to Block {0}'.format(index)}
 
