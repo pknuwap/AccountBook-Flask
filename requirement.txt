@@ -1,0 +1,9 @@
+Flask==0.12.2
+Flask-MySQL==1.4.0
+flask-paginate==0.5.1
+Flask-ReCaptcha==0.4.2
+html5lib==0.9999999
+Jinja2==2.10
+PyMySQL==0.8.0
+python-dateutil==2.6.1
+requests==2.18.4
