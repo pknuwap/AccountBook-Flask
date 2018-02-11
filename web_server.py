@@ -383,4 +383,4 @@ def page_not_found(e):
 
 # 프로그램 실행
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
