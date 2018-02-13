@@ -6,19 +6,6 @@
 - MYSQL 및 Python flask를 이용한 웹서비스 구현
 - 기본적인 알고리즘과 실력 향샹을 목표
 
-## 미리보기
-- ppt 디렉토리의 pdf 파일을 참고하시기 바랍니다.
-
-![1](https://user-images.githubusercontent.com/28443896/36150603-9369bd98-1107-11e8-8154-4688a0603ff7.png)
-
-![2](https://user-images.githubusercontent.com/28443896/36150610-97614182-1107-11e8-9620-e8a818987869.png)
-
-![4](https://user-images.githubusercontent.com/28443896/36150615-9b268606-1107-11e8-810a-b337ed79b2ea.png)
-
-![3](https://user-images.githubusercontent.com/28443896/36150618-9b6e86b8-1107-11e8-9611-ec73e6254214.png)
-
-![5](https://user-images.githubusercontent.com/28443896/36150619-9b996de2-1107-11e8-9148-2380a9bd49d1.png)
-
 
 ## 웹 전자장부 사용법 (web_server.py)
 - mysql version : 5.6
@@ -45,6 +32,20 @@ db_name = "accountBook"
 recaptcha_site_key ="google recaptcha site key"
 recaptcha_secret_key = "google recaptcha secret key"
 ```
+
+## 미리보기
+- ppt 디렉토리의 pdf 파일을 참고하시기 바랍니다.
+
+![1](https://user-images.githubusercontent.com/28443896/36150603-9369bd98-1107-11e8-8154-4688a0603ff7.png)
+
+![2](https://user-images.githubusercontent.com/28443896/36150610-97614182-1107-11e8-9620-e8a818987869.png)
+
+![4](https://user-images.githubusercontent.com/28443896/36150615-9b268606-1107-11e8-810a-b337ed79b2ea.png)
+
+![3](https://user-images.githubusercontent.com/28443896/36150618-9b6e86b8-1107-11e8-9611-ec73e6254214.png)
+
+![5](https://user-images.githubusercontent.com/28443896/36150619-9b996de2-1107-11e8-9148-2380a9bd49d1.png)
+
 
 ## 프로젝트 일정
 트렐로 사용
