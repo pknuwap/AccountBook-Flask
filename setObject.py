@@ -1,7 +1,7 @@
 # 기본설정 모듈
 
 db_user = "root"
-db_password = "dlxorud7202"
+db_password = ""
 db_host = "localhost"
 db_name = "accountBook"
 
